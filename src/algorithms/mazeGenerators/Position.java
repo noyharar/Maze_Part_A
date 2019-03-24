@@ -16,6 +16,7 @@ public class Position {
     }
 
     public int getRowIndex() {
+
         return row;
     }
 
