@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6b2c79e3-29fd-4a07-a6eb-14f516a1fcb5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/algorithms/mazeGenerators/Position.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithms/mazeGenerators/Position.java" afterDir="false" />
+    <list default="true" id="6b2c79e3-29fd-4a07-a6eb-14f516a1fcb5" name="Default Changelist" comment="Added new branch Noy">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -132,10 +132,9 @@
       <file leaf-file-name="Position.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/algorithms/mazeGenerators/Position.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="125">
-              <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
+            <state relative-caret-position="225">
+              <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
               <folding>
-                <element signature="e#146#147#0" expanded="true" />
                 <element signature="e#203#204#0" expanded="true" />
               </folding>
             </state>
@@ -157,7 +156,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="Gal" />
       </map>
     </option>
   </component>
@@ -294,6 +293,21 @@
       <updated>1553345223529</updated>
       <workItem from="1553345230204" duration="7516000" />
     </task>
+    <task id="LOCAL-00001" summary="Added new branch Gal">
+      <created>1553444493181</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1553444493181</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Added new branch Gal">
+      <created>1553444601899</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1553444601899</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -367,6 +381,11 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added new branch Gal" />
+    <MESSAGE value="Added new branch Noy" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added new branch Noy" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -454,7 +473,6 @@
         <state relative-caret-position="325">
           <caret line="21" column="5" lean-forward="true" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
           <folding>
-            <element signature="e#146#147#0" expanded="true" />
             <element signature="e#203#204#0" expanded="true" />
           </folding>
         </state>
@@ -531,10 +549,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/algorithms/mazeGenerators/Position.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
+        <state relative-caret-position="225">
+          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
           <folding>
-            <element signature="e#146#147#0" expanded="true" />
             <element signature="e#203#204#0" expanded="true" />
           </folding>
         </state>

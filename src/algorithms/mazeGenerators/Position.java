@@ -6,7 +6,8 @@ public class Position {
 
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return String.format("{%s,%s}", row, col);
     }
 
