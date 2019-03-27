@@ -1,15 +1,13 @@
 package algorithms.mazeGenerators;
 
 
-import com.sun.org.apache.xml.internal.security.utils.resolver.implementations.ResolverAnonymous;
-
 import java.util.Random;
 
 public class SimpleMazeGenerator extends AMazeGenerator {
 
     private int height;
     private int width;
-    private int[][] mazeArray;
+    private SimpleCell[][] mazeArray;
     private Maze myMaze;
     private int remain;
     private final int extraSize = 2;
@@ -18,7 +16,8 @@ public class SimpleMazeGenerator extends AMazeGenerator {
     private void init() {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                mazeArray[i][j] = 5;
+                mazeArray[i][j] = new SimpleCell();
+                mazeArray[i][j].setVisited(5);
             }
         }
 
@@ -42,7 +41,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
         height = rows;
         width = cols;
         remain = height * width;
-        mazeArray = new int[height][width];
+        mazeArray = new SimpleCell[height][width];
         init();
 
 
@@ -52,42 +51,50 @@ public class SimpleMazeGenerator extends AMazeGenerator {
         sPos = randomPos(height,width);
         ePos = randomPos(height,width);
 
-        while (sPos.getRowIndex() == ePos.getRowIndex() || sPos.getColumnIndex() == ePos.getColumnIndex())
+        while ((height != 1 && width != 1) && (sPos.getRowIndex() == ePos.getRowIndex() || sPos.getColumnIndex() == ePos.getColumnIndex()))
         {
             ePos = randomPos(height,width);
         }
 
 
         myMaze.setStartPosition(sPos);
-        myMaze.maze[sPos.getRowIndex()][sPos.getColumnIndex()] = 0;
+        myMaze.maze[sPos.getRowIndex()][sPos.getColumnIndex()].setVisited(0);
 
         myMaze.setGoalPosition(ePos);
-        myMaze.maze[ePos.getRowIndex()][ePos.getColumnIndex()] = 0;
+        myMaze.maze[ePos.getRowIndex()][ePos.getColumnIndex()].setVisited(0);
 
         setCourse(sPos,ePos);
 
         randomizeWalls();
 
-//        mazeRecursiveCreation(, );
 
         return myMaze;
 
 
     }
 
+    /**
+     * This Function radomizes all the walls in the maze that are not part of the valid course
+     */
     private void randomizeWalls()
     {
         Random genNum = new Random();
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                if(myMaze.maze[i][j] == 5)
+                if(myMaze.maze[i][j].getVisited() == 5)
                 {
-                    myMaze.maze[i][j] = genNum.nextInt(2);
+                    myMaze.maze[i][j].setVisited(genNum.nextInt(2));
                 }
             }
         }
     }
 
+    /**
+     * This function is Creating the valid course of the main to ensure that
+     * there is atleast one valid course.
+     * @param sPos - Start Postion of the maze
+     * @param ePos - End Postion of the maze
+     */
     private void setCourse(Position sPos, Position ePos)
     {
         int nextStep, lastRowsDistance = Math.abs(ePos.getRowIndex() - sPos.getRowIndex()), lastColDistance = Math.abs(ePos.getColumnIndex() - sPos.getColumnIndex());
@@ -107,7 +114,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
                     if(nextRow >= 0 && isAbsPossible(ePos, lastRowsDistance, lastColDistance, nextRow, nextCol))
                     {
                         next.setRow(nextRow);
-                        myMaze.maze[nextRow][nextCol]=0;
+                        myMaze.maze[nextRow][nextCol].setVisited(0);
                         lastRowsDistance = Math.abs(nextRow - ePos.getRowIndex());
                     }
                     break;
@@ -118,7 +125,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
                     if(nextCol < width && isAbsPossible(ePos, lastRowsDistance, lastColDistance, nextRow, nextCol))
                     {
                         next.setCol(nextCol);
-                        myMaze.maze[nextRow][nextCol]=0;
+                        myMaze.maze[nextRow][nextCol].setVisited(0);
                         lastColDistance = Math.abs(nextCol - ePos.getColumnIndex());
                     }
                     break;
@@ -129,7 +136,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
                     if(nextRow < height && isAbsPossible(ePos, lastRowsDistance, lastColDistance, nextRow, nextCol))
                     {
                         next.setRow(nextRow);
-                        myMaze.maze[nextRow][nextCol]=0;
+                        myMaze.maze[nextRow][nextCol].setVisited(0);
                         lastRowsDistance = Math.abs(nextRow - ePos.getRowIndex());
                     }
                     break;
@@ -140,7 +147,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
                     if(nextCol >= 0 && isAbsPossible(ePos, lastRowsDistance, lastColDistance, nextRow, nextCol))
                     {
                         next.setCol(nextCol);
-                        myMaze.maze[nextRow][nextCol]=0;
+                        myMaze.maze[nextRow][nextCol].setVisited(0);
                         lastColDistance = Math.abs(nextCol - ePos.getColumnIndex());
                     }
                     break;
@@ -155,52 +162,4 @@ public class SimpleMazeGenerator extends AMazeGenerator {
     }
 
 
-   /* private void mazeRecursiveCreation(int row, int col) {
-        remain--;
-        if (remain <= 1) {
-            Position endPostion = new Position(row, col);
-            myMaze.setGoalPosition(endPostion);
-            return;
-        }
-
-//        if (myMaze.maze[row][col] == 1)
-//            return;
-
-        myMaze.maze[row][col] = 0;
-//        remain--;
-        while (myMaze.maze[row][col - 1] == 5 || myMaze.maze[row + 1][col] == 5 || myMaze.maze[row][col + 1] == 5 || myMaze.maze[row - 1][col] == 5) {
-            while (true) {
-                int r1 = genNum.nextInt(4);
-                if (r1 == 0 && myMaze.maze[row][col - 1] == 5) {
-//                    myMaze.maze[row][col - 1] = 0;
-                    myMaze.maze[row][col+1] = 1;
-                    mazeRecursiveCreation(row, col - 1);
-                    remain--;
-                    break;
-                } else if (r1 == 1 && myMaze.maze[row + 1][col] == 5) {
-//                    myMaze.maze[row + 1][col] = 0;
-                    myMaze.maze[row-1][col] = 1;
-                    mazeRecursiveCreation(row + 1, col);
-                    remain--;
-                    break;
-                } else if (r1 == 2 && myMaze.maze[row][col + 1] == 5) {
-//                    myMaze.maze[row][col + 1] = 0;
-                    myMaze.maze[row][col-1] = 1;
-                    mazeRecursiveCreation(row, col + 1);
-                    remain--;
-                    break;
-                } else if (r1 == 3 && myMaze.maze[row - 1][col] == 5) {
-//                    myMaze.maze[row - 1][col] = 0;
-                    myMaze.maze[row+1][col] = 1;
-                    mazeRecursiveCreation(row - 1, col);
-                    remain--;
-                    break;
-                }
-
-
-            }
-        }
-
-
-    }*/
 }

@@ -1,29 +1,32 @@
 package algorithms.mazeGenerators;
 
+import java.util.ArrayList;
+
 public class Maze {
 
-    public int[][] maze;
+    public ACell[][] maze;
     private Position startPosition;
     private Position goalPosition;
 
-    public Maze(int[][] maze) {
+    public Maze(ACell[][] maze) {
         this.maze = maze;
     }
 
     public Maze(int rows, int cols) {
-        this.maze = new int[rows][cols];
+        this.maze = new ACell[rows][cols];
     }
 
     public void print() {
         for (int row = 0; row < maze.length; row++) {
             for (int col = 0; col < maze[0].length; col++) {
-                if (startPosition.isEqual(row, col)) {
-                    System.out.print("S ");
-                } else if (goalPosition.isEqual(row, col)) {
-                    System.out.print("E ");
-                } else {
-                    System.out.print(maze[row][col] + " ");
-                }
+//                if (startPosition.isEqual(row, col)) {
+//                    System.out.print("S ");
+//                } else if (goalPosition.isEqual(row, col)) {
+//                    System.out.print("E ");
+//                } else {
+//                    System.out.print(maze[row][col] + " ");
+//                }
+                System.out.print(maze[row][col]);
             }
             System.out.println();
         }
