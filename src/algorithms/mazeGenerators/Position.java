@@ -5,9 +5,14 @@ public class Position {
     private int col;
 
 
+
     public Position(int row, int col) {
         this.row = row;
         this.col = col;
+    }
+    public Position(Position pos) {
+        this.row = pos.row;
+        this.col = pos.col;
     }
 
     @Override
@@ -16,7 +21,11 @@ public class Position {
         return String.format("{%s,%s}", row, col);
     }
 
-    public boolean isEqual(int row, int col){
+    public boolean isEqual(Position pos){
+        return this.row == pos.row && this.col == pos.col;
+    }
+    public boolean isEqual(int row, int col)
+    {
         return this.row == row && this.col == col;
     }
 
