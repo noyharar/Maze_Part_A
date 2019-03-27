@@ -102,12 +102,6 @@ public class MyMazeGenerator extends AMazeGenerator {
             startPos = getNextPos();
         }
 
-
-
-
-
-
-
         return myMaze;
     }
 
@@ -134,7 +128,8 @@ public class MyMazeGenerator extends AMazeGenerator {
         MyCell myself = mazeArray[nextPos.getRowIndex()][nextPos.getColumnIndex()];
         myself.setVisited(0);
 
-        while(haveNeighbours(nextPos))
+        boolean haveNeighbours = haveNeighbours(nextPos);
+        while(haveNeighbours)
         {
             nextStep = genNum.nextInt(4);
             switch (nextStep)
@@ -146,6 +141,7 @@ public class MyMazeGenerator extends AMazeGenerator {
                         MyCell upCell = mazeArray[nextPos.getRowIndex()-1][nextPos.getColumnIndex()];
                         if(upCell.getVisited() == 5)
                         {
+                            haveNeighbours = false;
                             Position upPosition = new Position(nextPos.getRowIndex()-1,nextPos.getColumnIndex());
                             upCell.setWallDown(false);
                             DFSRecursive(upPosition);
@@ -159,6 +155,7 @@ public class MyMazeGenerator extends AMazeGenerator {
                         MyCell rightCell = mazeArray[nextPos.getRowIndex()][nextPos.getColumnIndex()+1];
                         if(rightCell.getVisited() == 5)
                         {
+                            haveNeighbours = false;
                             Position rightPosition = new Position(nextPos.getRowIndex(), nextPos.getColumnIndex()+1);
                             rightCell.setWallLeft(false);
                             DFSRecursive(rightPosition);
@@ -172,6 +169,7 @@ public class MyMazeGenerator extends AMazeGenerator {
                         MyCell downCell = mazeArray[nextPos.getRowIndex()+1][nextPos.getColumnIndex()];
                         if(downCell.getVisited() == 5)
                         {
+                            haveNeighbours = false;
                             Position downPosition = new Position(nextPos.getRowIndex()+1, nextPos.getColumnIndex());
                             myself.setWallDown(false);
                             DFSRecursive(downPosition);
@@ -185,6 +183,7 @@ public class MyMazeGenerator extends AMazeGenerator {
                         MyCell leftCell = mazeArray[nextPos.getRowIndex()][nextPos.getColumnIndex()-1];
                         if(leftCell.getVisited() == 5)
                         {
+                            haveNeighbours = false;
                             Position leftPosition = new Position(nextPos.getRowIndex(),nextPos.getColumnIndex()-1);
                             myself.setWallLeft(false);
                             DFSRecursive(leftPosition);

@@ -9,8 +9,8 @@ public class SimpleMazeGenerator extends AMazeGenerator {
     private int width;
     private SimpleCell[][] mazeArray;
     private Maze myMaze;
-    private int remain;
-    private final int extraSize = 2;
+   // private int remain;
+    //private final int extraSize = 2;
 
 
     private void init() {
@@ -40,7 +40,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
     public Maze generate(int rows, int cols) {
         height = rows;
         width = cols;
-        remain = height * width;
+       // remain = height * width;
         mazeArray = new SimpleCell[height][width];
         init();
 
