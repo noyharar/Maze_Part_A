@@ -16,6 +16,7 @@ public class Maze {
         this.maze = new ACell[rows][cols];
     }
 
+    //TODO: Need to change the maze[][] to int[][] and not ACell[][] and the print should be {0,1}
     public void print() {
         for (int row = 0; row < maze.length; row++) {
             for (int col = 0; col < maze[0].length; col++) {
