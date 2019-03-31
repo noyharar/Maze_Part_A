@@ -3,16 +3,26 @@ import java.util.Random;
 
 public abstract class AMazeGenerator implements IMazeGenerator {
 
+    protected Maze maze;
+
+    public AMazeGenerator(){}
+
 //    public Maze newMaze;
-    public abstract Maze generate(int rows, int cols);
+    public abstract Maze generate(int height, int width);
 
     @Override
-    public long measureAlgorithmTimeMillis(int rows, int cols) {
+    public long measureAlgorithmTimeMillis(int height, int width) {
         long startTime = System.currentTimeMillis();
-        generate(rows, cols);
+        generate(height, width);
         return System.currentTimeMillis() - startTime;
     }
 
+    /**
+     * This function return random position located at the maze
+     * @param height
+     * @param width
+     * @return random position
+     */
     protected Position randomPos(int height, int width)
     {
         Random genNum = new Random();

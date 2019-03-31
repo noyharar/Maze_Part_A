@@ -5,22 +5,16 @@ import java.util.Random;
 
 public class SimpleMazeGenerator extends AMazeGenerator {
 
-    private int height;
-    private int width;
-    private SimpleCell[][] mazeArray;
-    private Maze myMaze;
-   // private int remain;
-    //private final int extraSize = 2;
 
-
-    private void init() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                mazeArray[i][j] = new SimpleCell();
-                mazeArray[i][j].setVisited(5);
+    /**
+     * init the maze Array with 5 in order to sign unvisited cells
+     */
+    private void init(Maze myMaze, int num) {
+        for (int i = 0; i < myMaze.getHeight(); i++) {
+            for (int j = 0; j < myMaze.getWidth(); j++) {
+                myMaze.mazeArray[i][j]= 5;
             }
         }
-
 //         Init the first Row and the last Row as visited
 //        for (int i = 0; i < height; i++) {
 //            mazeArray[i][0] = 1;
@@ -34,18 +28,16 @@ public class SimpleMazeGenerator extends AMazeGenerator {
 //        }
     }
 
-
-
     @Override
-    public Maze generate(int rows, int cols) {
-        height = rows;
-        width = cols;
+    public Maze generate(int height, int width) {
+//        height = rows;
+//        width = cols;
        // remain = height * width;
-        mazeArray = new SimpleCell[height][width];
-        init();
+       // mazeArray = new int[getHeight][width];
+        this.maze = new Maze(height,width);
+        this.maze.init(5);
 
-
-        myMaze = new Maze(mazeArray);
+        //myMaze = new Maze(mazeArray);
         Position sPos,ePos;
 
         sPos = randomPos(height,width);
@@ -57,18 +49,18 @@ public class SimpleMazeGenerator extends AMazeGenerator {
         }
 
 
-        myMaze.setStartPosition(sPos);
-        myMaze.maze[sPos.getRowIndex()][sPos.getColumnIndex()].setVisited(0);
+        this.maze.setStartPosition(sPos);
+        this.maze.mazeArray[sPos.getRowIndex()][sPos.getColumnIndex()] = 0;
 
-        myMaze.setGoalPosition(ePos);
-        myMaze.maze[ePos.getRowIndex()][ePos.getColumnIndex()].setVisited(0);
+        this.maze.setGoalPosition(ePos);
+        this.maze.mazeArray[ePos.getRowIndex()][ePos.getColumnIndex()] = 0;
 
-        setCourse(sPos,ePos);
+        setCourse(this.maze,sPos,ePos);
 
-        randomizeWalls();
+        randomizeWalls(this.maze);
 
 
-        return myMaze;
+        return this.maze;
 
 
     }
@@ -76,14 +68,14 @@ public class SimpleMazeGenerator extends AMazeGenerator {
     /**
      * This Function radomizes all the walls in the maze that are not part of the valid course
      */
-    private void randomizeWalls()
+    private void randomizeWalls(Maze myMaze)
     {
         Random genNum = new Random();
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if(myMaze.maze[i][j].getVisited() == 5)
+        for (int i = 0; i < myMaze.getHeight(); i++) {
+            for (int j = 0; j < myMaze.getWidth(); j++) {
+                if(myMaze.mazeArray[i][j]== 5)
                 {
-                    myMaze.maze[i][j].setVisited(genNum.nextInt(2));
+                    myMaze.mazeArray[i][j]= (genNum.nextInt(2));
                 }
             }
         }
@@ -95,7 +87,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
      * @param sPos - Start Postion of the maze
      * @param ePos - End Postion of the maze
      */
-    private void setCourse(Position sPos, Position ePos)
+    private void setCourse(Maze myMaze, Position sPos, Position ePos)
     {
         int nextStep, lastRowsDistance = Math.abs(ePos.getRowIndex() - sPos.getRowIndex()), lastColDistance = Math.abs(ePos.getColumnIndex() - sPos.getColumnIndex());
         Position next = new Position(sPos);
@@ -114,7 +106,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
                     if(nextRow >= 0 && isAbsPossible(ePos, lastRowsDistance, lastColDistance, nextRow, nextCol))
                     {
                         next.setRow(nextRow);
-                        myMaze.maze[nextRow][nextCol].setVisited(0);
+                        myMaze.mazeArray[nextRow][nextCol] = 0;
                         lastRowsDistance = Math.abs(nextRow - ePos.getRowIndex());
                     }
                     break;
@@ -122,10 +114,10 @@ public class SimpleMazeGenerator extends AMazeGenerator {
                     //Right
                     nextRow = next.getRowIndex();
                     nextCol = next.getColumnIndex()+1;
-                    if(nextCol < width && isAbsPossible(ePos, lastRowsDistance, lastColDistance, nextRow, nextCol))
+                    if(nextCol < myMaze.getWidth() && isAbsPossible(ePos, lastRowsDistance, lastColDistance, nextRow, nextCol))
                     {
                         next.setCol(nextCol);
-                        myMaze.maze[nextRow][nextCol].setVisited(0);
+                        myMaze.mazeArray[nextRow][nextCol]= 0;
                         lastColDistance = Math.abs(nextCol - ePos.getColumnIndex());
                     }
                     break;
@@ -133,10 +125,10 @@ public class SimpleMazeGenerator extends AMazeGenerator {
                     //Down
                     nextRow = next.getRowIndex()+1;
                     nextCol = next.getColumnIndex();
-                    if(nextRow < height && isAbsPossible(ePos, lastRowsDistance, lastColDistance, nextRow, nextCol))
+                    if(nextRow < myMaze.getHeight() && isAbsPossible(ePos, lastRowsDistance, lastColDistance, nextRow, nextCol))
                     {
                         next.setRow(nextRow);
-                        myMaze.maze[nextRow][nextCol].setVisited(0);
+                        myMaze.mazeArray[nextRow][nextCol]= 0;
                         lastRowsDistance = Math.abs(nextRow - ePos.getRowIndex());
                     }
                     break;
@@ -147,7 +139,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
                     if(nextCol >= 0 && isAbsPossible(ePos, lastRowsDistance, lastColDistance, nextRow, nextCol))
                     {
                         next.setCol(nextCol);
-                        myMaze.maze[nextRow][nextCol].setVisited(0);
+                        myMaze.mazeArray[nextRow][nextCol]= 0;
                         lastColDistance = Math.abs(nextCol - ePos.getColumnIndex());
                     }
                     break;
