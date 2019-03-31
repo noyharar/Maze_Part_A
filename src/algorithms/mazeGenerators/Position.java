@@ -31,7 +31,7 @@ public class Position {
         return String.format("{%s,%s}", row, col);
     }
 
-    public boolean isEqual(Position pos){
+    public boolean equals(Position pos){
         return this.row == pos.row && this.col == pos.col;
     }
     public boolean isEqual(int row, int col)

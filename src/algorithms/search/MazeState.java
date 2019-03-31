@@ -1,15 +1,19 @@
 package algorithms.search;
 
+import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
 
 public class MazeState extends AState
 {
 
+    private int height;
     private Position positionState;
 
-    public MazeState(Position positionState) {
+    public MazeState(Position positionState, Maze maze) {
         this.positionState = positionState;
         this.cost = 0D;
+        this.state = positionState.toString();
+        this.height = maze.getHeight();
     }
 
 
@@ -31,5 +35,10 @@ public class MazeState extends AState
     public Position getPosition()
     {
         return this.positionState;
+    }
+
+    @Override
+    public int hashCode() {
+        return positionState.getRowIndex() + positionState.getColumnIndex() * this.height;
     }
 }

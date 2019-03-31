@@ -16,12 +16,12 @@ public class SearchableMaze implements ISearchable
 
     @Override
     public AState getStartState() {
-        return new MazeState(myMaze.getStartPosition());
+        return new MazeState(myMaze.getStartPosition(),myMaze);
     }
 
     @Override
     public AState getGoalState() {
-        return new MazeState(myMaze.getGoalPosition());
+        return new MazeState(myMaze.getGoalPosition(),myMaze);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class SearchableMaze implements ISearchable
 
         for (int row = -1; row <= 1; row++)
         {
-            for (int col = -1; col < 1; col++)
+            for (int col = -1; col <= 1; col++)
             {
                 try
                 {
@@ -46,15 +46,15 @@ public class SearchableMaze implements ISearchable
                             if(myMaze.getMazeArray()[pos.getRowIndex()+row][pos.getColumnIndex()] == 0 ||
                                     myMaze.getMazeArray()[pos.getRowIndex()][pos.getColumnIndex()+col] == 0)
                             {
-                                solution.add(new MazeState(new Position(pos.getRowIndex() + row, pos.getColumnIndex() + col)));
+                                solution.add(new MazeState(new Position(pos.getRowIndex() + row, pos.getColumnIndex() + col),myMaze));
                             }
                         }
                     }
-                    else if(row != 0 && col != 0)
+                    else if(!(row == 0 && col == 0))
                     {
                         if(myMaze.getMazeArray()[pos.getRowIndex()+row][pos.getColumnIndex()+col] == 0)
                         {
-                            solution.add(new MazeState(new Position(pos.getRowIndex() + row, pos.getColumnIndex() + col)));
+                            solution.add(new MazeState(new Position(pos.getRowIndex() + row, pos.getColumnIndex() + col),myMaze));
                         }
                     }
                 }

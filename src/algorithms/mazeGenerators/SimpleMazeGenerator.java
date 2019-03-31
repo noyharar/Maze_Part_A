@@ -94,7 +94,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
         Random genNum = new Random();
         int nextRow, nextCol;
 
-        while (!next.isEqual(ePos))
+        while (!next.equals(ePos))
         {
             nextStep = genNum.nextInt(4);
             switch (nextStep)

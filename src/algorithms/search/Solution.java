@@ -11,4 +11,7 @@ public class Solution
     }
 
 
+    public ArrayList<AState> getSolutionPath() {
+        return this.allStatesInSolution;
+    }
 }
