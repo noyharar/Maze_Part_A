@@ -12,7 +12,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
     private void init(Maze myMaze, int num) {
         for (int i = 0; i < myMaze.getHeight(); i++) {
             for (int j = 0; j < myMaze.getWidth(); j++) {
-                myMaze.mazeArray[i][j]= 5;
+                myMaze.getMazeArray()[i][j]= 5;
             }
         }
 //         Init the first Row and the last Row as visited
@@ -50,10 +50,10 @@ public class SimpleMazeGenerator extends AMazeGenerator {
 
 
         this.maze.setStartPosition(sPos);
-        this.maze.mazeArray[sPos.getRowIndex()][sPos.getColumnIndex()] = 0;
+        this.maze.getMazeArray()[sPos.getRowIndex()][sPos.getColumnIndex()] = 0;
 
         this.maze.setGoalPosition(ePos);
-        this.maze.mazeArray[ePos.getRowIndex()][ePos.getColumnIndex()] = 0;
+        this.maze.getMazeArray()[ePos.getRowIndex()][ePos.getColumnIndex()] = 0;
 
         setCourse(this.maze,sPos,ePos);
 
@@ -73,9 +73,9 @@ public class SimpleMazeGenerator extends AMazeGenerator {
         Random genNum = new Random();
         for (int i = 0; i < myMaze.getHeight(); i++) {
             for (int j = 0; j < myMaze.getWidth(); j++) {
-                if(myMaze.mazeArray[i][j]== 5)
+                if(myMaze.getMazeArray()[i][j]== 5)
                 {
-                    myMaze.mazeArray[i][j]= (genNum.nextInt(2));
+                    myMaze.getMazeArray()[i][j]= (genNum.nextInt(2));
                 }
             }
         }
@@ -106,7 +106,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
                     if(nextRow >= 0 && isAbsPossible(ePos, lastRowsDistance, lastColDistance, nextRow, nextCol))
                     {
                         next.setRow(nextRow);
-                        myMaze.mazeArray[nextRow][nextCol] = 0;
+                        myMaze.getMazeArray()[nextRow][nextCol] = 0;
                         lastRowsDistance = Math.abs(nextRow - ePos.getRowIndex());
                     }
                     break;
@@ -117,7 +117,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
                     if(nextCol < myMaze.getWidth() && isAbsPossible(ePos, lastRowsDistance, lastColDistance, nextRow, nextCol))
                     {
                         next.setCol(nextCol);
-                        myMaze.mazeArray[nextRow][nextCol]= 0;
+                        myMaze.getMazeArray()[nextRow][nextCol]= 0;
                         lastColDistance = Math.abs(nextCol - ePos.getColumnIndex());
                     }
                     break;
@@ -128,7 +128,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
                     if(nextRow < myMaze.getHeight() && isAbsPossible(ePos, lastRowsDistance, lastColDistance, nextRow, nextCol))
                     {
                         next.setRow(nextRow);
-                        myMaze.mazeArray[nextRow][nextCol]= 0;
+                        myMaze.getMazeArray()[nextRow][nextCol]= 0;
                         lastRowsDistance = Math.abs(nextRow - ePos.getRowIndex());
                     }
                     break;
@@ -139,7 +139,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
                     if(nextCol >= 0 && isAbsPossible(ePos, lastRowsDistance, lastColDistance, nextRow, nextCol))
                     {
                         next.setCol(nextCol);
-                        myMaze.mazeArray[nextRow][nextCol]= 0;
+                        myMaze.getMazeArray()[nextRow][nextCol]= 0;
                         lastColDistance = Math.abs(nextCol - ePos.getColumnIndex());
                     }
                     break;

@@ -1,10 +1,8 @@
 package algorithms.mazeGenerators;
 
-import java.util.ArrayList;
-
 public class Maze {
 
-    public int[][] mazeArray;
+    private int[][] mazeArray;
     private Position startPosition;
     private Position goalPosition;
     private int height;
@@ -39,7 +37,13 @@ public class Maze {
         }
     */
 
+    public int[][] getMazeArray() {
+        return mazeArray;
+    }
 
+    public void setMazeArray(int[][] mazeArray) {
+        this.mazeArray = mazeArray;
+    }
 
     public void init(int num) {
         for (int i = 0; i < height; i++) {

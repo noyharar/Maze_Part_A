@@ -18,7 +18,7 @@ public class MyMazeGenerator extends AMazeGenerator {
 
         maze.setStartPosition(randomPos(height,width,null));
         Position start = maze.getStartPosition();
-        maze.mazeArray[start.getRowIndex()][start.getColumnIndex()] = 0;
+        maze.getMazeArray()[start.getRowIndex()][start.getColumnIndex()] = 0;
         wallList = new ArrayList<>();
         insertNeighboursToList(start);
 
@@ -32,12 +32,12 @@ public class MyMazeGenerator extends AMazeGenerator {
 
 
                 onTheOtherEnd = currentRandom.getOtherSide();
-                if(maze.mazeArray[currentRandom.getRowIndex()][currentRandom.getColumnIndex()] == 1)
+                if(maze.getMazeArray()[currentRandom.getRowIndex()][currentRandom.getColumnIndex()] == 1)
                 {
-                    if(maze.mazeArray[onTheOtherEnd.getRowIndex()][onTheOtherEnd.getColumnIndex()] == 1)
+                    if(maze.getMazeArray()[onTheOtherEnd.getRowIndex()][onTheOtherEnd.getColumnIndex()] == 1)
                     {
-                        maze.mazeArray[currentRandom.getRowIndex()][currentRandom.getColumnIndex()] = 0;
-                        maze.mazeArray[onTheOtherEnd.getRowIndex()][onTheOtherEnd.getColumnIndex()] = 0;
+                        maze.getMazeArray()[currentRandom.getRowIndex()][currentRandom.getColumnIndex()] = 0;
+                        maze.getMazeArray()[onTheOtherEnd.getRowIndex()][onTheOtherEnd.getColumnIndex()] = 0;
 
                         maze.setGoalPosition(onTheOtherEnd);
 
@@ -65,13 +65,13 @@ public class MyMazeGenerator extends AMazeGenerator {
     private void insertNeighboursToList(Position pos)
     {
         try {
-            if ((pos.getRowIndex() - 1 >= 0) && (maze.mazeArray[pos.getRowIndex() - 1][pos.getColumnIndex()] == 1))
+            if ((pos.getRowIndex() - 1 >= 0) && (maze.getMazeArray()[pos.getRowIndex() - 1][pos.getColumnIndex()] == 1))
                 wallList.add(new Position(pos.getRowIndex() - 1,pos.getColumnIndex(),pos));
-            if ((pos.getColumnIndex() - 1 >= 0) && (maze.mazeArray[pos.getRowIndex()][pos.getColumnIndex() - 1] == 1))
+            if ((pos.getColumnIndex() - 1 >= 0) && (maze.getMazeArray()[pos.getRowIndex()][pos.getColumnIndex() - 1] == 1))
                 wallList.add(new Position(pos.getRowIndex() ,pos.getColumnIndex() - 1, pos));
-            if ((pos.getRowIndex() - 1 <= maze.getHeight()) && (maze.mazeArray[pos.getRowIndex() + 1][pos.getColumnIndex()] == 1))
+            if ((pos.getRowIndex() - 1 <= maze.getHeight()) && (maze.getMazeArray()[pos.getRowIndex() + 1][pos.getColumnIndex()] == 1))
                 wallList.add(new Position(pos.getRowIndex() + 1,pos.getColumnIndex(), pos));
-            if ((pos.getColumnIndex() - 1 <= maze.getWidth()) && (maze.mazeArray[pos.getRowIndex()][pos.getColumnIndex() + 1] == 1))
+            if ((pos.getColumnIndex() - 1 <= maze.getWidth()) && (maze.getMazeArray()[pos.getRowIndex()][pos.getColumnIndex() + 1] == 1))
                 wallList.add(new Position(pos.getRowIndex() ,pos.getColumnIndex() + 1, pos));
         }
         catch (Exception e)

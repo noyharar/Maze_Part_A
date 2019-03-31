@@ -1,13 +1,14 @@
 package algorithms.mazeGenerators;
 
-import javafx.geometry.Pos;
-
 public class Position {
     private int row;
     private int col;
     private Position myParentPos;
 
-
+    public Position(int row, int col) {
+        this.row = row;
+        this.col = col;
+    }
 
     public Position(int row, int col, Position pos) {
         this.row = row;
