@@ -11,7 +11,7 @@ public class RunMazeGenerator {
 
     private static void testMazeGenerator(IMazeGenerator mazeGenerator) {
         // prints the time it takes the algorithm to run
-        int myrow = 100, mycol = 50;
+        int myrow = 2, mycol = 2;
         System.out.println(String.format("Maze generation time(ms): %s", mazeGenerator.measureAlgorithmTimeMillis(myrow/*rows*/, mycol/*columns*/)));
 
         System.out.println("Before 2nd Generation");
