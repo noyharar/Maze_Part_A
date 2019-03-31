@@ -23,7 +23,7 @@ public abstract class AMazeGenerator implements IMazeGenerator {
      * @param width
      * @return random position
      */
-    protected Position randomPos(int height, int width)
+    protected Position randomPos(int height, int width, Position pos)
     {
         Random genNum = new Random();
         int sPosX = -1, sPosY = -1;
@@ -35,7 +35,7 @@ public abstract class AMazeGenerator implements IMazeGenerator {
             sPosY = genNum.nextInt(width);
         }
 
-        Position postion = new Position(sPosX, sPosY);
+        Position postion = new Position(sPosX, sPosY,pos);
         return postion;
     }
 }

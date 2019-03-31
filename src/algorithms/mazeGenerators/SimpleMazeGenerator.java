@@ -40,12 +40,12 @@ public class SimpleMazeGenerator extends AMazeGenerator {
         //myMaze = new Maze(mazeArray);
         Position sPos,ePos;
 
-        sPos = randomPos(height,width);
-        ePos = randomPos(height,width);
+        sPos = randomPos(height,width,null);
+        ePos = randomPos(height,width,null);
 
         while ((height != 1 && width != 1) && (sPos.getRowIndex() == ePos.getRowIndex() || sPos.getColumnIndex() == ePos.getColumnIndex()))
         {
-            ePos = randomPos(height,width);
+            ePos = randomPos(height,width,null);
         }
 
 

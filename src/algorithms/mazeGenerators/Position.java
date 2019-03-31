@@ -1,18 +1,27 @@
 package algorithms.mazeGenerators;
 
+import javafx.geometry.Pos;
+
 public class Position {
     private int row;
     private int col;
+    private Position myParentPos;
 
 
 
-    public Position(int row, int col) {
+    public Position(int row, int col, Position pos) {
         this.row = row;
         this.col = col;
+        myParentPos = pos;
     }
     public Position(Position pos) {
         this.row = pos.row;
         this.col = pos.col;
+        myParentPos = pos.myParentPos;
+    }
+
+    public Position getMyParentPos() {
+        return myParentPos;
     }
 
     @Override
@@ -47,4 +56,20 @@ public class Position {
     }
 
 
+    public Position getOtherSide()
+    {
+        int myRow= row - myParentPos.row;
+        int myCol= col - myParentPos.col;
+        if(myRow != 0)
+        {
+           return new Position(row + myRow,col, this);
+        }
+        if(myCol != 0)
+        {
+            return new Position(row,col + myCol, this);
+        }
+
+        return null;
+
+    }
 }

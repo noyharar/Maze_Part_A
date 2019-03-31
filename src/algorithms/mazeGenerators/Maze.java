@@ -16,6 +16,7 @@ public class Maze {
         this.mazeArray = new int[height][width];
         this.height = height;
         this.width = width;
+
     }
 
 
@@ -52,10 +53,10 @@ public class Maze {
                 for (int col = 0; col < width; col++) {
                     if (startPosition.isEqual(row, col)) {
                         System.out.print("S ");
-                    } /*else if (goalPosition.isEqual(row, col)) {
+                    } else if (goalPosition.isEqual(row, col)) {
                         System.out.print("E ");
 
-                    } */else {
+                    } else {
                         System.out.print(mazeArray[row][col] + " ");
                     }
               //      System.out.print(maze[row][col]);
