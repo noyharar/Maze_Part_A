@@ -33,7 +33,7 @@ public class Position {
         return String.format("{%s,%s}", row, col);
     }
 
-
+/*
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -42,11 +42,11 @@ public class Position {
                 col == position.col &&
                 Objects.equals(myParentPos, position.myParentPos);
     }
-/*
+*/
     public boolean equals(Position pos){
         return this.row == pos.getRowIndex() && this.col == pos.getColumnIndex();
     }
-    */
+
     public boolean isEqual(int row, int col)
     {
         return this.row == row && this.col == col;
