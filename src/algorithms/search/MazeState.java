@@ -11,11 +11,17 @@ public class MazeState extends AState
 
     public MazeState(Position positionState, Maze maze) {
         this.positionState = positionState;
-        this.cost = 0D;
+        this.cost = 0;
         this.state = positionState.toString();
         this.height = maze.getHeight();
     }
 
+    public MazeState(Position positionState, Maze maze, int cost) {
+        this.positionState = positionState;
+        this.cost = cost;
+        this.state = positionState.toString();
+        this.height = maze.getHeight();
+    }
 
 
 
@@ -40,5 +46,19 @@ public class MazeState extends AState
     @Override
     public int hashCode() {
         return positionState.getRowIndex() + positionState.getColumnIndex() * this.height;
+    }
+
+    @Override
+    public int compareTo(AState o) {
+        if(o instanceof MazeState){
+            MazeState other = (MazeState)o;
+            if(this.cost - other.cost == 0){
+                return 0;
+            }
+            if(this.cost - other.cost > 0){
+                return 1;
+            }
+        }
+        return -1;
     }
 }

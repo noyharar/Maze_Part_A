@@ -35,7 +35,7 @@ public abstract class AMazeGenerator implements IMazeGenerator {
             sPosY = genNum.nextInt(width);
         }
 
-        Position postion = new Position(sPosX, sPosY,pos);
+        Position postion = new Position(sPosX, sPosY);
         return postion;
     }
 }

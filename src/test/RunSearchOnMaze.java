@@ -9,13 +9,11 @@ public class RunSearchOnMaze
     public static void main(String[] args)
     {
         IMazeGenerator mg = new MyMazeGenerator();
-        Maze maze = mg.generate(10, 10);
-//        maze.print();
+        Maze maze = mg.generate(5, 5);
+        maze.print();
         SearchableMaze searchableMaze = new SearchableMaze(maze);
-        BreadthFirstSearch bfs = new BreadthFirstSearch();
-        solveProblem(searchableMaze, bfs);
-        solveProblem(searchableMaze, bfs);
-        solveProblem(searchableMaze, new DepthFirstSearch());
+        solveProblem(searchableMaze, new BreadthFirstSearch());
+       // solveProblem(searchableMaze, new DepthFirstSearch());
 //        solveProblem(searchableMaze, new BestFirstSearch());
     }
     private static void solveProblem(ISearchable domain, ISearchingAlgorithm searcher)

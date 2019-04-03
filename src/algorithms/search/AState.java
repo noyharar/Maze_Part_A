@@ -2,21 +2,31 @@ package algorithms.search;
 
 import java.util.Objects;
 
-public abstract class AState
+public abstract class AState implements Comparable<AState>
 {
     protected String state;
-    protected double cost;
+    protected int cost;
     protected AState parent;
 
-
+    /**
+     * Get parent
+     * @return parent
+     */
     public AState getParent() {
         return parent;
     }
 
+    /**
+     *Set parent
+     * @param parent
+     */
     public void setParent(AState parent) {
         this.parent = parent;
     }
 
+    /**
+     * check if two states are equals
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
