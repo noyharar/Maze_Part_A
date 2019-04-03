@@ -91,7 +91,7 @@ public class SearchableMaze implements ISearchable
         try {
             Position currPos =  new Position(row, col, parent);
             MazeState curr = new MazeState(currPos, myMaze, cost);
-            curr.setParent(s);
+//            curr.setParent(s);
             curr.cost = s.cost+cost;
             solution.add(curr);
         }
