@@ -43,44 +43,60 @@ public class SearchableMaze implements ISearchable
         int col = pos.getColumnIndex();
         //Up
         if(checkNeighbour(row-1,col,myMaze)){
-            addStateToSolution(row-1,col,10,myMaze,s,solution);
+            addStateToSolution(pos,row-1,col,10,myMaze,s,solution);
         }
         //Cross-Up-Right
         if(checkNeighbour(row-1,col+1,myMaze)){
-            addStateToSolution(row-1,col+1,15,myMaze,s,solution);
+
+            if(myMaze.getMazeArray()[row-1][col] == 0 || myMaze.getMazeArray()[row][col+1] == 0)
+            {
+                addStateToSolution(pos,row-1,col+1,15,myMaze,s,solution);
+            }
         }
         //Right
         if(checkNeighbour(row,col+1,myMaze)){
-            addStateToSolution(row,col+1,10,myMaze,s,solution);
+            addStateToSolution(pos,row,col+1,10,myMaze,s,solution);
         }
         //Cross-Down-Right
         if(checkNeighbour(row+1,col+1,myMaze)){
-            addStateToSolution(row+1,col+1,15,myMaze,s,solution);
+            if(myMaze.getMazeArray()[row+1][col] == 0 || myMaze.getMazeArray()[row][col+1] == 0) {
+                addStateToSolution(pos, row + 1, col + 1, 15, myMaze, s, solution);
+            }
         }
         //Down
         if(checkNeighbour(row+1,col,myMaze)){
-            addStateToSolution(row+1,col,10,myMaze,s,solution);
+            addStateToSolution(pos,row+1,col,10,myMaze,s,solution);
         }
         //Cross-Down-Left
-        if(checkNeighbour(row-1,col-1,myMaze)){
-            addStateToSolution(row-1,col-1,15,myMaze,s,solution);
-        }
+        if(checkNeighbour(row+1,col-1,myMaze)){
+            if(myMaze.getMazeArray()[row+1][col] == 0 || myMaze.getMazeArray()[row][col-1] == 0) {
+                addStateToSolution(pos, row + 1, col - 1, 15, myMaze, s, solution);
+            }
+            }
         //Left
         if(checkNeighbour(row,col-1,myMaze)){
-            addStateToSolution(row,col-1,10,myMaze,s,solution);
+            addStateToSolution(pos, row,col-1,10,myMaze,s,solution);
         }
         //Cross-Up-Left
         if(checkNeighbour(row-1,col-1,myMaze)){
-            addStateToSolution(row-1,col-1,15,myMaze,s,solution);
+            if(myMaze.getMazeArray()[row-1][col] == 0 || myMaze.getMazeArray()[row][col-1] == 0) {
+                addStateToSolution(pos, row - 1, col - 1, 15, myMaze, s, solution);
+            }
         }
         return solution;
 
     }
 
-    private void addStateToSolution(int row, int col,int cost, Maze myMaze, AState s, ArrayList<AState> solution) {
-        Position currPos =  new Position(row, col);
-        MazeState curr = new MazeState(currPos, myMaze, cost);
-        solution.add(curr);
+    private void addStateToSolution(Position parent, int row, int col,int cost, Maze myMaze, AState s, ArrayList<AState> solution) {
+        try {
+            Position currPos =  new Position(row, col, parent);
+            MazeState curr = new MazeState(currPos, myMaze, cost);
+            curr.setParent(s);
+            curr.cost = s.cost+cost;
+            solution.add(curr);
+        }
+        catch (Exception e){}
+
     }
 
 

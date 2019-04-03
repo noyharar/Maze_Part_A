@@ -15,14 +15,11 @@ public class MyMazeGenerator extends AMazeGenerator {
         this.maze = new Maze(height,width);
         maze.init(1);
 
-
         maze.setStartPosition(randomPos(height,width,null));
         Position start = maze.getStartPosition();
         maze.getMazeArray()[start.getRowIndex()][start.getColumnIndex()] = 0;
         wallList = new ArrayList<>();
         insertNeighboursToList(start);
-
-
 
         while (!wallList.isEmpty())
         {
