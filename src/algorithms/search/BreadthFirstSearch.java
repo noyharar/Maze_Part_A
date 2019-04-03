@@ -17,6 +17,9 @@ public class BreadthFirstSearch extends ASearchingAlgorithm
     {
         if(s == null)
             return new Solution(new ArrayList<>());
+        numOfVisitedNodes = 0;
+        visited.clear();
+        stateQueue.clear();
 
         stateQueue.add(s.getStartState());
         numOfVisitedNodes++;
