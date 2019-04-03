@@ -23,7 +23,10 @@ public class BreadthFirstSearch extends ASearchingAlgorithm
         //check null case
         if(s == null)
             return new Solution(new ArrayList<>());
-        //add the start state to the queue
+        numOfVisitedNodes = 0;
+        visited.clear();
+        stateQueue.clear();
+
         stateQueue.add(s.getStartState());
         //update the num of visited states
         numOfVisitedNodes++;
