@@ -45,7 +45,7 @@ public class BreadthFirstSearch extends ASearchingAlgorithm
             }
             //check all the states with their possible neighbors
             for (AState state : s.getAllPossibleStates(specificState))
-            {
+                {
                 //if the state is not located at the hashSet = not visited
                 if(!visited.contains(state))
                 {

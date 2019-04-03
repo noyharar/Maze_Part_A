@@ -16,6 +16,9 @@ public class DepthFirstSearch extends ASearchingAlgorithm
     {
         if(s == null)
             return new Solution(new ArrayList<>());
+        visited.clear();
+        numOfVisitedNodes = 0;
+        stateStack.clear();
 
         stateStack.push(s.getStartState());
         visited.add(s.getStartState());

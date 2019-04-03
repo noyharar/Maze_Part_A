@@ -12,9 +12,15 @@ public class RunSearchOnMaze
         Maze maze = mg.generate(5, 5);
         maze.print();
         SearchableMaze searchableMaze = new SearchableMaze(maze);
-        solveProblem(searchableMaze, new BreadthFirstSearch());
-       // solveProblem(searchableMaze, new DepthFirstSearch());
-//        solveProblem(searchableMaze, new BestFirstSearch());
+        ISearchingAlgorithm searcher = new BreadthFirstSearch();
+//        solveProblem(searchableMaze, searcher);
+//        solveProblem(searchableMaze, searcher);
+//        searcher = new DepthFirstSearch();
+//        solveProblem(searchableMaze, searcher);
+//        solveProblem(searchableMaze, searcher);
+        searcher = new BestFirstSearch();
+        solveProblem(searchableMaze, searcher);
+//        solveProblem(searchableMaze, searcher);
     }
     private static void solveProblem(ISearchable domain, ISearchingAlgorithm searcher)
     {
