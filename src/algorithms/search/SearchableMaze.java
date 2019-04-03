@@ -24,7 +24,14 @@ public class SearchableMaze implements ISearchable
         return new MazeState(myMaze.getGoalPosition(),myMaze);
     }
 
-    @Override
+
+    public boolean checkNeighbour(int row, int col, Maze maze){
+        if(row >= 0 && col >= 0 && row < maze.getHeight() && col < maze.getWidth()&& myMaze.getMazeArray()[row][col] == 0){
+            return true;
+        }
+        return false;
+    }
+
     public ArrayList<AState> getAllPossibleStates(AState s)
     {
         if(!(s instanceof MazeState))
@@ -32,41 +39,94 @@ public class SearchableMaze implements ISearchable
         MazeState myState = (MazeState)s;
         Position pos = myState.getPosition();
         ArrayList<AState> solution = new ArrayList<>();
-
-        for (int row = -1; row <= 1; row++)
-        {
-            for (int col = -1; col <= 1; col++)
-            {
-                try
-                {
-                    if(Math.abs(row)==Math.abs(col) && row != 0 && col != 0)
-                    {
-                        if(myMaze.getMazeArray()[pos.getRowIndex()+row][pos.getColumnIndex()+col] == 0)
-                        {
-                            if(myMaze.getMazeArray()[pos.getRowIndex()+row][pos.getColumnIndex()] == 0 ||
-                                    myMaze.getMazeArray()[pos.getRowIndex()][pos.getColumnIndex()+col] == 0)
-                            {
-                                solution.add(new MazeState(new Position(pos.getRowIndex() + row, pos.getColumnIndex() + col),myMaze));
-                            }
-                        }
-                    }
-                    else if(!(row == 0 && col == 0))
-                    {
-                        if(myMaze.getMazeArray()[pos.getRowIndex()+row][pos.getColumnIndex()+col] == 0)
-                        {
-                            solution.add(new MazeState(new Position(pos.getRowIndex() + row, pos.getColumnIndex() + col),myMaze));
-                        }
-                    }
-                }
-                catch (Exception e){
-                    //ignore ArrayIndexOutOfBound
-                }
-
-            }
+        int row = pos.getRowIndex();
+        int col = pos.getColumnIndex();
+        //Up
+        if(checkNeighbour(row-1,col,myMaze)){
+            addStateToSolution(row-1,col,10,myMaze,s,solution);
         }
-
+        //Cross-Up-Right
+        if(checkNeighbour(row-1,col+1,myMaze)){
+            addStateToSolution(row-1,col+1,15,myMaze,s,solution);
+        }
+        //Right
+        if(checkNeighbour(row,col+1,myMaze)){
+            addStateToSolution(row,col+1,10,myMaze,s,solution);
+        }
+        //Cross-Down-Right
+        if(checkNeighbour(row+1,col+1,myMaze)){
+            addStateToSolution(row+1,col+1,15,myMaze,s,solution);
+        }
+        //Down
+        if(checkNeighbour(row+1,col,myMaze)){
+            addStateToSolution(row+1,col,10,myMaze,s,solution);
+        }
+        //Cross-Down-Left
+        if(checkNeighbour(row-1,col-1,myMaze)){
+            addStateToSolution(row-1,col-1,15,myMaze,s,solution);
+        }
+        //Left
+        if(checkNeighbour(row,col-1,myMaze)){
+            addStateToSolution(row,col-1,10,myMaze,s,solution);
+        }
+        //Cross-Up-Left
+        if(checkNeighbour(row-1,col-1,myMaze)){
+            addStateToSolution(row-1,col-1,15,myMaze,s,solution);
+        }
         return solution;
 
     }
+
+    private void addStateToSolution(int row, int col,int cost, Maze myMaze, AState s, ArrayList<AState> solution) {
+        Position currPos =  new Position(row, col);
+        MazeState curr = new MazeState(currPos, myMaze, cost);
+        solution.add(curr);
+    }
+
+
+//    @Override
+//    public ArrayList<AState> getAllPossibleStates(AState s)
+//    {
+//        if(!(s instanceof MazeState))
+//            return new ArrayList<>();
+//        MazeState myState = (MazeState)s;
+//        Position pos = myState.getPosition();
+//        ArrayList<AState> solution = new ArrayList<>();
+//
+//        for (int row = -1; row <= 1; row++)
+//        {
+//            for (int col = -1; col <= 1; col++)
+//            {
+//                try
+//                {
+//                    if(Math.abs(row)==Math.abs(col) && row != 0 && col != 0)
+//                    {
+//                        if(myMaze.getMazeArray()[pos.getRowIndex()+row][pos.getColumnIndex()+col] == 0)
+//                        {
+//                            if(myMaze.getMazeArray()[pos.getRowIndex()+row][pos.getColumnIndex()] == 0 ||
+//                                    myMaze.getMazeArray()[pos.getRowIndex()][pos.getColumnIndex()+col] == 0)
+//                            {
+//                                solution.add(new MazeState(new Position(pos.getRowIndex() + row, pos.getColumnIndex() + col),myMaze));
+//                            }
+//                        }
+//                    }
+//                    else if(!(row == 0 && col == 0))
+//                    {
+//                        if(myMaze.getMazeArray()[pos.getRowIndex()+row][pos.getColumnIndex()+col] == 0)
+//                        {
+//                            solution.add(new MazeState(new Position(pos.getRowIndex() + row, pos.getColumnIndex() + col),myMaze));
+//                        }
+//                    }
+//                }
+//                catch (Exception e){
+//                    //ignore ArrayIndexOutOfBound
+//                }
+//
+//            }
+//        }
+//
+//        return solution;
+//
+//    }
 
 }

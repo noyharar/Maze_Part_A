@@ -9,5 +9,8 @@ public class BestFirstSearch extends BreadthFirstSearch
         stateQueue = new PriorityQueue<>();
     }
 
-
+    @Override
+    public String getName() {
+        return "Best First Search";
+    }
 }

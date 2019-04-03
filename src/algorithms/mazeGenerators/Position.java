@@ -1,5 +1,7 @@
 package algorithms.mazeGenerators;
 
+import java.util.Objects;
+
 public class Position {
     private int row;
     private int col;
@@ -31,9 +33,20 @@ public class Position {
         return String.format("{%s,%s}", row, col);
     }
 
-    public boolean equals(Position pos){
-        return this.row == pos.row && this.col == pos.col;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Position position = (Position) o;
+        return row == position.row &&
+                col == position.col &&
+                Objects.equals(myParentPos, position.myParentPos);
     }
+/*
+    public boolean equals(Position pos){
+        return this.row == pos.getRowIndex() && this.col == pos.getColumnIndex();
+    }
+    */
     public boolean isEqual(int row, int col)
     {
         return this.row == row && this.col == col;
