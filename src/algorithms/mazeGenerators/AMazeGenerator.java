@@ -10,6 +10,11 @@ public abstract class AMazeGenerator implements IMazeGenerator {
 //    public Maze newMaze;
     public abstract Maze generate(int height, int width);
 
+    /**
+     * @param height of the mzae
+     * @param width of the maze
+     * @return the time it's take to build the current maze
+     */
     @Override
     public long measureAlgorithmTimeMillis(int height, int width) {
         long startTime = System.currentTimeMillis();

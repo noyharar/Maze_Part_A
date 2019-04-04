@@ -92,7 +92,9 @@ public class BreadthFirstSearch extends ASearchingAlgorithm
         return new Solution(new ArrayList<>());
     }
 
-
+    /**
+     * @return the name of the search
+     */
     @Override
     public String getName() {
         return "Breadth First Search";

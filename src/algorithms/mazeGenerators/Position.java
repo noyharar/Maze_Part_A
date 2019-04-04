@@ -57,27 +57,43 @@ public class Position {
         return row;
     }
 
+    /**
+     * @return the col's position
+     */
     public int getColumnIndex() {
         return col;
     }
 
+    /**
+     * Set col
+     * @param col
+     */
     public void setCol(int col) {
         this.col = col;
     }
 
+    /**
+     * Set row
+     * @param row
+     */
     public void setRow(int row) {
         this.row = row;
     }
 
 
+    /**
+     * @return the opposite side of my parent
+     */
     public Position getOtherSide()
     {
         int myRow= row - myParentPos.row;
         int myCol= col - myParentPos.col;
+        //if I came from different row
         if(myRow != 0)
         {
            return new Position(row + myRow,col, this);
         }
+        //if I came from different col
         if(myCol != 0)
         {
             return new Position(row,col + myCol, this);

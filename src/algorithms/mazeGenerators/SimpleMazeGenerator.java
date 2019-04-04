@@ -5,16 +5,18 @@ import java.util.Random;
 
 public class SimpleMazeGenerator extends AMazeGenerator {
 
-
+/*
     /**
      * init the maze Array with 5 in order to sign unvisited cells
-     */
+     *//*
     private void init(Maze myMaze, int num) {
         for (int i = 0; i < myMaze.getHeight(); i++) {
             for (int j = 0; j < myMaze.getWidth(); j++) {
                 myMaze.getMazeArray()[i][j]= 5;
             }
         }
+    }
+    */
 //         Init the first Row and the last Row as visited
 //        for (int i = 0; i < height; i++) {
 //            mazeArray[i][0] = 1;
@@ -26,37 +28,46 @@ public class SimpleMazeGenerator extends AMazeGenerator {
 //            mazeArray[0][j] = 1;
 //            mazeArray[width - 1][j] = 1;
 //        }
-    }
 
+
+    /**
+     * @param height
+     * @param width
+     * @return random maze on size height x width
+     */
     @Override
     public Maze generate(int height, int width) {
 //        height = rows;
 //        width = cols;
        // remain = height * width;
        // mazeArray = new int[getHeight][width];
+
         this.maze = new Maze(height,width);
+        //init the new maze with 5
         this.maze.init(5);
 
         //myMaze = new Maze(mazeArray);
         Position sPos,ePos;
 
+        //random start and end position
         sPos = randomPos(height,width,null);
         ePos = randomPos(height,width,null);
 
+        //will random in case that start position equals to end position
         while ((height != 1 && width != 1) && (sPos.getRowIndex() == ePos.getRowIndex() || sPos.getColumnIndex() == ePos.getColumnIndex()))
         {
             ePos = randomPos(height,width,null);
         }
 
-
+        //will set the start/end position and will init the start/end with zero
         this.maze.setStartPosition(sPos);
         this.maze.getMazeArray()[sPos.getRowIndex()][sPos.getColumnIndex()] = 0;
 
         this.maze.setGoalPosition(ePos);
         this.maze.getMazeArray()[ePos.getRowIndex()][ePos.getColumnIndex()] = 0;
-
+        //will make the path between the start to end
         setCourse(this.maze,sPos,ePos);
-
+        //after we have path between the start position to the end will randomize the other cells's value
         randomizeWalls(this.maze);
 
 
@@ -66,15 +77,18 @@ public class SimpleMazeGenerator extends AMazeGenerator {
     }
 
     /**
-     * This Function radomizes all the walls in the maze that are not part of the valid course
+     * This Function radomizes all the walls in the maze
+     * that are not part of the valid course
      */
     private void randomizeWalls(Maze myMaze)
     {
         Random genNum = new Random();
         for (int i = 0; i < myMaze.getHeight(); i++) {
             for (int j = 0; j < myMaze.getWidth(); j++) {
+                //if it's 5, we never visited in this position
                 if(myMaze.getMazeArray()[i][j]== 5)
                 {
+                    //will random with 0 or 1
                     myMaze.getMazeArray()[i][j]= (genNum.nextInt(2));
                 }
             }
@@ -83,7 +97,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
 
     /**
      * This function is Creating the valid course of the main to ensure that
-     * there is atleast one valid course.
+     * there is at least one valid course.
      * @param sPos - Start Postion of the maze
      * @param ePos - End Postion of the maze
      */
@@ -96,9 +110,11 @@ public class SimpleMazeGenerator extends AMazeGenerator {
 
         while (!next.equals(ePos))
         {
+            //will choose random side
             nextStep = genNum.nextInt(4);
             switch (nextStep)
             {
+            //for every case will check the distance and set as 0 if we can
                 case 0:
                     //Up
                     nextRow = next.getRowIndex()-1;
@@ -148,6 +164,14 @@ public class SimpleMazeGenerator extends AMazeGenerator {
         }
     }
 
+    /**
+     * @param goalPos
+     * @param rowDistance
+     * @param colDistance
+     * @param nextRow
+     * @param nextCol
+     * @return
+     */
     private boolean isAbsPossible(Position goalPos, int rowDistance, int colDistance, int nextRow, int nextCol) {
         return Math.abs(nextRow - goalPos.getRowIndex()) <= rowDistance &&
                 Math.abs(nextCol - goalPos.getColumnIndex()) <= colDistance;

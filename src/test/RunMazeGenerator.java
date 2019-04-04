@@ -5,8 +5,8 @@ import algorithms.mazeGenerators.*;
 public class RunMazeGenerator {
     public static void main(String[] args) {
 //        testMazeGenerator(new EmptyMazeGenerator());
-//        testMazeGenerator(new SimpleMazeGenerator());
-        testMazeGenerator(new MyMazeGenerator());
+        testMazeGenerator(new SimpleMazeGenerator());
+//        testMazeGenerator(new MyMazeGenerator());
     }
 
     private static void testMazeGenerator(IMazeGenerator mazeGenerator) {
@@ -20,7 +20,7 @@ public class RunMazeGenerator {
         System.out.println("After 2nd Generation");
 
         // prints the maze
-        maze.printZeroOnes();
+        maze.print();
 
         // get the maze entrance
         Position startPosition = maze.getStartPosition();

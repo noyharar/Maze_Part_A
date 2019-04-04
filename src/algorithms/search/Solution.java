@@ -11,6 +11,9 @@ public class Solution
     }
 
 
+    /**
+     * @return The path's solution
+     */
     public ArrayList<AState> getSolutionPath() {
         return this.allStatesInSolution;
     }

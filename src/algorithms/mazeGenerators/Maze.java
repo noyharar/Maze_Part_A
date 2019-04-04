@@ -37,14 +37,25 @@ public class Maze {
         }
     */
 
+    /**
+     * @return the maze's array
+     */
     public int[][] getMazeArray() {
         return mazeArray;
     }
 
+    /**
+     * set maze's array
+     * @param mazeArray
+     */
     public void setMazeArray(int[][] mazeArray) {
         this.mazeArray = mazeArray;
     }
 
+    /**
+     * @param num
+     * init all the maze's array with number
+     */
     public void init(int num) {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -71,7 +82,10 @@ public class Maze {
     //TODO: print Solution
 
 
-    public void printZeroOnes() {
+    /**
+     * print the maze's array
+     */
+    public void print() {
             for (int row = 0; row < height; row++) {
                 for (int col = 0; col < width; col++) {
                     if (startPosition.isEqual(row, col)) {
@@ -88,47 +102,75 @@ public class Maze {
             }
         }
 
-
+/*
     public int[][] getMaze() {
         return mazeArray;
     }
-
+*/
+/*
     public void setMaze(int[][] maze) {
         this.mazeArray = maze;
     }
+*/
 
+    /**
+     * @return the maze's height
+     */
     public int getHeight() {
         return height;
     }
 
+    /**
+     * @param height
+     * set height
+     */
     public void setHeight(int height) {
         this.height = height;
     }
 
+    /**
+     * @return the maze's width
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * @param width
+     * set width
+     */
     public void setWidth(int width) {
         this.width = width;
     }
 
+    /**
+     * @return start position of the maze
+     */
     public Position getStartPosition() {
         return startPosition;
     }
 
+    /**
+     * @return End position of the maze
+     */
     public Position getGoalPosition() {
         return goalPosition;
     }
 
+    /**
+     * Set start position
+     * @param startPosition
+     */
     public void setStartPosition(Position startPosition) {
         this.startPosition = startPosition;
     }
 
+    /**
+     * Set goal position
+     * @param goalPosition
+     */
     public void setGoalPosition(Position goalPosition) {
         this.goalPosition = goalPosition;
     }
-
-
 }
 

@@ -9,6 +9,9 @@ public class BestFirstSearch extends BreadthFirstSearch
         stateQueue = new PriorityQueue<AState>();
     }
 
+    /**
+     * @return the name of the search
+     */
     @Override
     public String getName() {
         return "Best First Search";

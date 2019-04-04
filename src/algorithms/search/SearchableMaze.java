@@ -16,6 +16,9 @@ public class SearchableMaze implements ISearchable
         this.myMaze = myMaze;
     }
 
+    /**
+     * @return the start state
+     */
     @Override
     public AState getStartState() {
         Position startPos = myMaze.getStartPosition();
@@ -25,7 +28,9 @@ public class SearchableMaze implements ISearchable
     }
 
 
-
+    /**
+     * @return the goal state
+     */
     @Override
     public AState getGoalState() {
         Position endPos = myMaze.getGoalPosition();
@@ -35,6 +40,13 @@ public class SearchableMaze implements ISearchable
     }
 
 
+    /**
+     * Check if it's neighbour
+     * @param row
+     * @param col
+     * @param maze
+     * @return if it's wall or neighbour
+     */
     public boolean checkNeighbour(int row, int col, Maze maze){
         if(row >= 0 && col >= 0 && row < maze.getHeight() && col < maze.getWidth()&& myMaze.getMazeArray()[row][col] == 0){
             return true;
@@ -42,6 +54,11 @@ public class SearchableMaze implements ISearchable
         return false;
     }
 
+    /**
+     * Check all the possible states by the clock
+     * @param s
+     * @return the solution
+     */
     public ArrayList<AState> getAllPossibleStates(AState s)
     {
         if(!(s instanceof MazeState))
@@ -51,6 +68,7 @@ public class SearchableMaze implements ISearchable
         ArrayList<AState> solution = new ArrayList<>();
         int row = pos.getRowIndex();
         int col = pos.getColumnIndex();
+        //for every neighbour, if it's 0 will add to solution
         //Up
         if(checkNeighbour(row-1,col,myMaze)){
             addStateToSolution(pos,row-1,col,regualrCost,myMaze,s,solution);
@@ -94,9 +112,18 @@ public class SearchableMaze implements ISearchable
             }
         }
         return solution;
-
     }
 
+    /**
+     * This function add MazeState to the solution list
+     * @param parent
+     * @param row
+     * @param col
+     * @param cost
+     * @param myMaze
+     * @param s
+     * @param solution
+     */
     private void addStateToSolution(Position parent, int row, int col,int cost, Maze myMaze, AState s, ArrayList<AState> solution) {
         try {
             Position currPos =  new Position(row, col, parent);

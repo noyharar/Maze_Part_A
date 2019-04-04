@@ -29,7 +29,10 @@ public class MazeState extends AState
     }
 
 
-
+    /**
+     * @param obj
+     * @return if the both objects are equals by the position's state
+     */
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof MazeState))
@@ -38,21 +41,36 @@ public class MazeState extends AState
         return this.positionState.equals(mzstate.positionState);
     }
 
+    /**
+     * @return the position string
+     */
     @Override
     public String toString() {
         return this.positionState.toString();
     }
 
+    /**
+     * @return position's state
+     */
     public Position getPosition()
     {
         return this.positionState;
     }
 
+    /**
+     * Hash function
+     * @return hash index
+     */
     @Override
     public int hashCode() {
         return positionState.getRowIndex() + positionState.getColumnIndex() * this.height;
     }
 
+    /**
+     * compare between two MazeStates by the costs
+     * @param o
+     * @return 0,1,-1
+     */
     @Override
     public int compareTo(AState o) {
         if(o instanceof MazeState){
