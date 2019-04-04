@@ -12,6 +12,12 @@ public class MyMazeGenerator extends AMazeGenerator {
 
     @Override
     public Maze generate(int height, int width) {
+        if(height < 4 || width < 4)
+        {
+            height = 10;
+            width = 10;
+//            return maze;
+        }
         this.maze = new Maze(height,width);
         maze.init(1);
 
@@ -31,6 +37,7 @@ public class MyMazeGenerator extends AMazeGenerator {
                 onTheOtherEnd = currentRandom.getOtherSide();
                 if(maze.getMazeArray()[currentRandom.getRowIndex()][currentRandom.getColumnIndex()] == 1)
                 {
+
                     if(maze.getMazeArray()[onTheOtherEnd.getRowIndex()][onTheOtherEnd.getColumnIndex()] == 1)
                     {
                         maze.getMazeArray()[currentRandom.getRowIndex()][currentRandom.getColumnIndex()] = 0;
@@ -50,6 +57,8 @@ public class MyMazeGenerator extends AMazeGenerator {
             }
 
         }
+
+
 
 
 

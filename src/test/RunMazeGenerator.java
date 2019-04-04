@@ -20,7 +20,7 @@ public class RunMazeGenerator {
         System.out.println("After 2nd Generation");
 
         // prints the maze
-        maze.print();
+        maze.printZeroOnes();
 
         // get the maze entrance
         Position startPosition = maze.getStartPosition();

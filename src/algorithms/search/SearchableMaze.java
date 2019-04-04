@@ -7,7 +7,9 @@ import java.util.ArrayList;
 
 public class SearchableMaze implements ISearchable
 {
-    Maze myMaze;
+    private Maze myMaze;
+    private final int diagonalCost = 5;
+    private final int regualrCost = 10;
 
 
     public SearchableMaze(Maze myMaze) {
@@ -16,12 +18,20 @@ public class SearchableMaze implements ISearchable
 
     @Override
     public AState getStartState() {
-        return new MazeState(myMaze.getStartPosition(),myMaze);
+        Position startPos = myMaze.getStartPosition();
+        if (startPos != null)
+            return new MazeState(myMaze.getStartPosition(),myMaze);
+        return null;
     }
+
+
 
     @Override
     public AState getGoalState() {
-        return new MazeState(myMaze.getGoalPosition(),myMaze);
+        Position endPos = myMaze.getGoalPosition();
+        if(endPos != null)
+            return new MazeState(myMaze.getGoalPosition(),myMaze);
+        return null;
     }
 
 
@@ -43,44 +53,44 @@ public class SearchableMaze implements ISearchable
         int col = pos.getColumnIndex();
         //Up
         if(checkNeighbour(row-1,col,myMaze)){
-            addStateToSolution(pos,row-1,col,10,myMaze,s,solution);
+            addStateToSolution(pos,row-1,col,regualrCost,myMaze,s,solution);
         }
         //Cross-Up-Right
         if(checkNeighbour(row-1,col+1,myMaze)){
 
             if(myMaze.getMazeArray()[row-1][col] == 0 || myMaze.getMazeArray()[row][col+1] == 0)
             {
-                addStateToSolution(pos,row-1,col+1,15,myMaze,s,solution);
+                addStateToSolution(pos,row-1,col+1,diagonalCost,myMaze,s,solution);
             }
         }
         //Right
         if(checkNeighbour(row,col+1,myMaze)){
-            addStateToSolution(pos,row,col+1,10,myMaze,s,solution);
+            addStateToSolution(pos,row,col+1,regualrCost,myMaze,s,solution);
         }
         //Cross-Down-Right
         if(checkNeighbour(row+1,col+1,myMaze)){
             if(myMaze.getMazeArray()[row+1][col] == 0 || myMaze.getMazeArray()[row][col+1] == 0) {
-                addStateToSolution(pos, row + 1, col + 1, 15, myMaze, s, solution);
+                addStateToSolution(pos, row + 1, col + 1, diagonalCost, myMaze, s, solution);
             }
         }
         //Down
         if(checkNeighbour(row+1,col,myMaze)){
-            addStateToSolution(pos,row+1,col,10,myMaze,s,solution);
+            addStateToSolution(pos,row+1,col,regualrCost,myMaze,s,solution);
         }
         //Cross-Down-Left
         if(checkNeighbour(row+1,col-1,myMaze)){
             if(myMaze.getMazeArray()[row+1][col] == 0 || myMaze.getMazeArray()[row][col-1] == 0) {
-                addStateToSolution(pos, row + 1, col - 1, 15, myMaze, s, solution);
+                addStateToSolution(pos, row + 1, col - 1, diagonalCost, myMaze, s, solution);
             }
             }
         //Left
         if(checkNeighbour(row,col-1,myMaze)){
-            addStateToSolution(pos, row,col-1,10,myMaze,s,solution);
+            addStateToSolution(pos, row,col-1,regualrCost,myMaze,s,solution);
         }
         //Cross-Up-Left
         if(checkNeighbour(row-1,col-1,myMaze)){
             if(myMaze.getMazeArray()[row-1][col] == 0 || myMaze.getMazeArray()[row][col-1] == 0) {
-                addStateToSolution(pos, row - 1, col - 1, 15, myMaze, s, solution);
+                addStateToSolution(pos, row - 1, col - 1, diagonalCost, myMaze, s, solution);
             }
         }
         return solution;
@@ -92,7 +102,7 @@ public class SearchableMaze implements ISearchable
             Position currPos =  new Position(row, col, parent);
             MazeState curr = new MazeState(currPos, myMaze, cost);
 //            curr.setParent(s);
-            curr.cost = s.cost+cost;
+            curr.cost = cost;
             solution.add(curr);
         }
         catch (Exception e){}

@@ -10,9 +10,14 @@ public class MazeState extends AState
     private Position positionState;
 
     public MazeState(Position positionState, Maze maze) {
-        this.positionState = positionState;
+        if(positionState == null)
+            this.positionState = null;
+        else
+        {
+            this.positionState = positionState;
+            this.state = positionState.toString();
+        }
         this.cost = 0;
-        this.state = positionState.toString();
         this.height = maze.getHeight();
     }
 

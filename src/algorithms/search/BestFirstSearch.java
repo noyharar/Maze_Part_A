@@ -6,7 +6,7 @@ public class BestFirstSearch extends BreadthFirstSearch
 {
     public BestFirstSearch()
     {
-        stateQueue = new PriorityQueue<>();
+        stateQueue = new PriorityQueue<AState>();
     }
 
     @Override

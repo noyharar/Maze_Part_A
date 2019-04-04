@@ -3,13 +3,27 @@ package algorithms.search;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class BreadthFirstSearch extends ASearchingAlgorithm
 {
     protected Queue<AState> stateQueue;
+//    Logger log = Logger.getLogger("BFS_Logger");
+//    Level lvl = Level.ALL;
+//    ConsoleHandler cnslHndlr = new ConsoleHandler();
+
 
     public BreadthFirstSearch() {
         stateQueue = new LinkedList<>();
+//        /*********** Loggin Section ******************/
+//        log.setLevel(lvl);
+//        cnslHndlr.setFormatter(new SimpleFormatter());
+//        log.addHandler(cnslHndlr);
+//        cnslHndlr.setLevel(lvl);
+//        /********************************************/
     }
 
     /**
@@ -20,14 +34,23 @@ public class BreadthFirstSearch extends ASearchingAlgorithm
     @Override
     public Solution solve(ISearchable s)
     {
+        //TODO: Ask if the cross moving should be the same in Best and in Breadth or not
+        // Yes it Should, obvious by Aviad...
+        //TODO: Is there a possiblity that Breadth evaluated less Nodes than Best?
+        // Sounds not legit, best should always evaluate less nodes
+
+
         //check null case
-        if(s == null)
+
+        if(s == null || s.getStartState() == null || s.getGoalState() == null)
             return new Solution(new ArrayList<>());
         numOfVisitedNodes = 0;
         visited.clear();
         stateQueue.clear();
 
         stateQueue.add(s.getStartState());
+//        System.out.println("Im Searcher of type: " + this.getName());
+//        System.out.println(this.getName() + " Added Stated State: " + s.getStartState().toString());
         //update the num of visited states
         numOfVisitedNodes++;
         //add the start state to the visited hashSet
@@ -56,6 +79,8 @@ public class BreadthFirstSearch extends ASearchingAlgorithm
                     state.setParent(specificState);
                     //add the state to the queue
                     stateQueue.add(state);
+//                    System.out.println("Im Searcher of type: " + this.getName());
+//                    System.out.println(this.getName() + " Added another state: " + state.toString());
                     //when get arrived to the end position, will return the solution
                     if (state.equals(s.getGoalState()))
                     {
