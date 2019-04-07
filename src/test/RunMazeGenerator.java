@@ -5,13 +5,13 @@ import algorithms.mazeGenerators.*;
 public class RunMazeGenerator {
     public static void main(String[] args) {
 //        testMazeGenerator(new EmptyMazeGenerator());
-        testMazeGenerator(new SimpleMazeGenerator());
-//        testMazeGenerator(new MyMazeGenerator());
+//        testMazeGenerator(new SimpleMazeGenerator());
+        testMazeGenerator(new MyMazeGenerator());
     }
 
     private static void testMazeGenerator(IMazeGenerator mazeGenerator) {
         // prints the time it takes the algorithm to run
-        int myrow = 5, mycol = 5;
+        int myrow = 10, mycol = 10;
         System.out.println(String.format("Maze generation time(ms): %s", mazeGenerator.measureAlgorithmTimeMillis(myrow/*rows*/, mycol/*columns*/)));
 
         System.out.println("Before 2nd Generation");

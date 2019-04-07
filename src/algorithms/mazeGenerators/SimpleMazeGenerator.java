@@ -68,7 +68,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
         //will make the path between the start to end
         setCourse(this.maze,sPos,ePos);
         //after we have path between the start position to the end will randomize the other cells's value
-        randomizeWalls(this.maze);
+        this.maze.randomizeWalls(5);
 
 
         return this.maze;
@@ -76,24 +76,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
 
     }
 
-    /**
-     * This Function radomizes all the walls in the maze
-     * that are not part of the valid course
-     */
-    private void randomizeWalls(Maze myMaze)
-    {
-        Random genNum = new Random();
-        for (int i = 0; i < myMaze.getHeight(); i++) {
-            for (int j = 0; j < myMaze.getWidth(); j++) {
-                //if it's 5, we never visited in this position
-                if(myMaze.getMazeArray()[i][j]== 5)
-                {
-                    //will random with 0 or 1
-                    myMaze.getMazeArray()[i][j]= (genNum.nextInt(2));
-                }
-            }
-        }
-    }
+
 
     /**
      * This function is Creating the valid course of the main to ensure that

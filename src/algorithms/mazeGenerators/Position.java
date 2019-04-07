@@ -84,11 +84,12 @@ public class Position {
     /**
      * @return the opposite side of my parent
      */
-    public Position getOtherSide()
+    public Position getOtherSide(int height, int width)
     {
         int myRow= row - myParentPos.row;
         int myCol= col - myParentPos.col;
         //if I came from different row
+        if(myRow >= 0 && myCol >= 0 && myRow < height && myCol < width){
         if(myRow != 0)
         {
            return new Position(row + myRow,col, this);
@@ -97,6 +98,7 @@ public class Position {
         if(myCol != 0)
         {
             return new Position(row,col + myCol, this);
+        }
         }
 
         return null;

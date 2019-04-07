@@ -1,5 +1,7 @@
 package algorithms.mazeGenerators;
 
+import java.util.Random;
+
 public class Maze {
 
     private int[][] mazeArray;
@@ -101,7 +103,24 @@ public class Maze {
                 System.out.println();
             }
         }
-
+    /**
+     * This Function radomizes all the walls in the maze
+     * that are not part of the valid course
+     */
+    public void randomizeWalls(int num)
+    {
+        Random genNum = new Random();
+        for (int i = 0; i < getHeight(); i++) {
+            for (int j = 0; j < getWidth(); j++) {
+                //if it's 5, we never visited in this position
+                if(getMazeArray()[i][j] == num)
+                {
+                    //will random with 0 or 1
+                     getMazeArray()[i][j]= (genNum.nextInt(2));
+                }
+            }
+        }
+    }
 /*
     public int[][] getMaze() {
         return mazeArray;

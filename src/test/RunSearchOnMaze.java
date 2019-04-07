@@ -9,7 +9,7 @@ public class RunSearchOnMaze
     public static void main(String[] args)
     {
         IMazeGenerator mg = new MyMazeGenerator();
-        Maze maze = mg.generate(4, 4);
+        Maze maze = mg.generate(15, 15);
 //        maze.printColor();
         maze.print();
         SearchableMaze searchableMaze = new SearchableMaze(maze);
