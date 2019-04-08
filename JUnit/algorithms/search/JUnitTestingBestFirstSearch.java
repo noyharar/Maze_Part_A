@@ -36,8 +36,9 @@ class JUnitTestingBestFirstSearch {
         Solution emptyMaze = best.solve((ISearchable)null);
         assertEquals(emptyMaze.getSolutionPath().size(),0);
         //TODO: check 1 and 2
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 1000; i++) {
             myMaze = mazeGenerator.generate(i,i);
+//            myMaze.print();
             mazeForSearch = new SearchableMaze(myMaze);
             Solution bestSol = best.solve(mazeForSearch);
             Solution anotherBestSol = anotherBest.solve(mazeForSearch);

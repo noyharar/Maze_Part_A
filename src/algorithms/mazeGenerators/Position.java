@@ -33,16 +33,8 @@ public class Position {
         return String.format("{%s,%s}", row, col);
     }
 
-/*
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Position position = (Position) o;
-        return row == position.row &&
-                col == position.col &&
-                Objects.equals(myParentPos, position.myParentPos);
-    }
-*/
+
+
     public boolean equals(Position pos){
         return this.row == pos.getRowIndex() && this.col == pos.getColumnIndex();
     }
@@ -86,19 +78,20 @@ public class Position {
      */
     public Position getOtherSide(int height, int width)
     {
-        int myRow= row - myParentPos.row;
-        int myCol= col - myParentPos.col;
+        int myRow= row - myParentPos.row, myCol= col - myParentPos.col, posRow = row + myRow, posCol = col + myCol;
+
         //if I came from different row
-        if(myRow >= 0 && myCol >= 0 && myRow < height && myCol < width){
-        if(myRow != 0)
+        if( posRow >= 0 &&  posCol >= 0 && posRow < height && posCol < width)
         {
-           return new Position(row + myRow,col, this);
-        }
-        //if I came from different col
-        if(myCol != 0)
-        {
-            return new Position(row,col + myCol, this);
-        }
+            if(myRow != 0)
+            {
+                return new Position(posRow,col, this);
+            }
+            //if I came from different col
+            if(myCol != 0)
+            {
+                return new Position(row,posCol, this);
+            }
         }
 
         return null;

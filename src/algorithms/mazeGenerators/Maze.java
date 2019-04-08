@@ -66,24 +66,6 @@ public class Maze {
         }
     }
 
-    public void printColor () {
-        for (int i = 0; i < this.mazeArray.length; i++) {
-            for (int j = 0; j < mazeArray[i].length; j++) {
-                if (i == startPosition.getRowIndex() && j == startPosition.getColumnIndex()) {//startPosition
-                    System.out.print(" " + "\u001B[33m" + " ");
-                } else if (i == goalPosition.getRowIndex() && j == goalPosition.getColumnIndex()) {//goalPosition
-                    System.out.print(" " + "\u001B[44m" + " ");
-                } else if (mazeArray[i][j] == 1) System.out.print(" " + "\u001B[45m" + " ");
-                else System.out.print(" " + "\u001B[107m" + " ");
-            }
-            System.out.println(" " + "\u001B[107m");
-        }
-
-    }
-
-    //TODO: print Solution
-
-
     /**
      * print the maze's array
      */
