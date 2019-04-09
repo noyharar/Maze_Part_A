@@ -10,8 +10,8 @@ public class MyMazeGenerator extends AMazeGenerator {
 
     /**
      * build random maze based on Prim algorithm
-     * @param height
-     * @param width
+     * @param height the height of the maze
+     * @param width the width of the maze
      * @return random maze on size height x width
      */
     @Override
@@ -111,6 +111,7 @@ public class MyMazeGenerator extends AMazeGenerator {
         }
         catch (Exception e)
         {
+
             //Ignore IndexArrayOutOfBound
         }
 
