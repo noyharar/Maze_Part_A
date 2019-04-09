@@ -18,9 +18,12 @@ public class RunMazeGenerator {
         // generate another maze
         Maze maze = mazeGenerator.generate(myrow/*rows*/, mycol/*columns*/);
         System.out.println("After 2nd Generation");
-
+        maze.toByteArray();
+        Maze byteMaze = new Maze(maze.toByteArray());
         // prints the maze
         maze.print();
+        System.out.println();
+        byteMaze.print();
 
         // get the maze entrance
         Position startPosition = maze.getStartPosition();
