@@ -104,9 +104,9 @@ public class MyMazeGenerator extends AMazeGenerator {
                 wallList.add(new Position(pos.getRowIndex() - 1,pos.getColumnIndex(),pos));
             if ((pos.getColumnIndex() - 1 >= 0) && (maze.getMazeArray()[pos.getRowIndex()][pos.getColumnIndex() - 1] == 1))
                 wallList.add(new Position(pos.getRowIndex() ,pos.getColumnIndex() - 1, pos));
-            if ((pos.getRowIndex() + 1 <= maze.getHeight()) && (maze.getMazeArray()[pos.getRowIndex() + 1][pos.getColumnIndex()] == 1))
+            if ((pos.getRowIndex() + 1 < maze.getHeight()) && (maze.getMazeArray()[pos.getRowIndex() + 1][pos.getColumnIndex()] == 1))
                 wallList.add(new Position(pos.getRowIndex() + 1,pos.getColumnIndex(), pos));
-            if ((pos.getColumnIndex() + 1 <= maze.getWidth()) && (maze.getMazeArray()[pos.getRowIndex()][pos.getColumnIndex() + 1] == 1))
+            if ((pos.getColumnIndex() + 1 < maze.getWidth()) && (maze.getMazeArray()[pos.getRowIndex()][pos.getColumnIndex() + 1] == 1))
                 wallList.add(new Position(pos.getRowIndex() ,pos.getColumnIndex() + 1, pos));
         }
         catch (Exception e)
