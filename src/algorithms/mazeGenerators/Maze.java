@@ -252,12 +252,14 @@ public class Maze {
         heightSize +=1 ;
         widthSize += heightSize;
         insertDataIntoByteArray(width,heightSize,widthSize, byteArray);
+        widthSize++;
+        int index = widthSize;
 
-        int index = widthSize++;
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                byteArray[++index] = (byte)mazeArray[i][j];
+                byteArray[index] = (byte)mazeArray[i][j];
+                ++index;
             }
         }
 

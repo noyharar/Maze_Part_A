@@ -11,44 +11,44 @@ public class MyDecompressorInputStream extends InputStream {
         this.in = in;
     }
 
+
+    @Override
     public int read() throws IOException {
-        return 0;
+        return in.read();
     }
 
     public int read(byte[] b) throws IOException {
         byte[] copyByte = new byte[b.length];
-        in.read(copyByte);
+            int read = in.read(copyByte);
+            /*while(read != -1){
+                read = in.read(copyByte)
+            }
+             */
+            int countM1 = 0;
+            int index = 0;
 
-        int countM1 = 0;
-        int index = 0;
-
-        while(countM1 < 6)
-        {
-            b[index] = copyByte[index];
-            if(b[index] == -1){
-                countM1++;
+            while (countM1 < 6) {
+                b[index] = copyByte[index];
+                if (b[index] == -1) {
+                    countM1++;
+                }
+                index++;
             }
-            index++;
-        }
-        byte num = 0;
-        int inForIndex = index;
-        for (int i = index; i < b.length; ) {
-            for (int j = 0; j < copyByte[inForIndex]; j++) {
-                b[i] = num;
-                i++;
+            byte num = 0;
+            int inForIndex = index;
+            for (int i = index; i < b.length; ) {
+                for (int j = 0; j < copyByte[inForIndex]; j++) {
+                    b[i] = num;
+                    i++;
+                }
+                if (num == 0) {
+                    num = 1;
+                } else {
+                    num = 0;
+                }
+                inForIndex++;
             }
-            if(num == 0)
-            {
-                num = 1;
-            }
-            else
-            {
-                num = 0;
-            }
-            inForIndex++;
-        }
-
-        return -1;
+        return read;
     }
 
 
