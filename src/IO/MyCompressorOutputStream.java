@@ -1,5 +1,6 @@
 package IO;
 
+import java.io.IOException;
 import java.io.OutputStream;
 
 public  class MyCompressorOutputStream extends OutputStream{
@@ -48,6 +49,12 @@ public  class MyCompressorOutputStream extends OutputStream{
 
         for (int i = index; i < b.length; i++) {
                 write(b[i]);
+        }
+
+        try {
+            out.write(count);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
