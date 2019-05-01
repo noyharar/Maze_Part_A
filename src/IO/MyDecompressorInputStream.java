@@ -21,6 +21,7 @@ public class MyDecompressorInputStream extends InputStream {
 
     public int read(byte[] b) throws IOException {
         byte[] copyByte = new byte[b.length];
+        int countTwoZeros = 0;
         int read = in.read(copyByte);
             /*while(read != -1){
                 read = in.read(copyByte)
@@ -46,10 +47,15 @@ public class MyDecompressorInputStream extends InputStream {
             for (int j = 0; j < copyByte[inForIndex]; j++) {
                 b[i] = num;
                 i++;
+                countTwoZeros = 0;
             }
             if(copyByte[inForIndex] == -1)
             {
                 isBiggerThanMaxByte = !isBiggerThanMaxByte;
+            }
+            else if(copyByte[inForIndex] == 0)
+            {
+                countTwoZeros++;
             }
             if(!isBiggerThanMaxByte)
             {
@@ -59,6 +65,8 @@ public class MyDecompressorInputStream extends InputStream {
                     num = 0;
                 }
             }
+            if(countTwoZeros > 2)
+                break;
             inForIndex++;
         }
         return read;
