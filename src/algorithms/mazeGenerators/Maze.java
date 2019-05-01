@@ -18,12 +18,24 @@ public class Maze {
     }
 
 
-    public Maze(int[][] maze){
-            this.mazeArray = maze;
+    /**
+     * Generates a new array and copies the values from the old one
+     * @param maze
+     */
+    public Maze(int[][] maze)
+    {
+        this.mazeArray = new int[maze.length][maze[0].length];
+
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[i].length; j++) {
+                this.mazeArray[i][j] = maze[i][j];
+            }
+        }
+        
     }
 
-    public Maze(int[][] maze, Position startPosition, Position goalPosition) {
-        this.mazeArray = maze;
+    public Maze(int[][] maze, Position startPosition, Position goalPosition){
+        this(maze);
         this.startPosition = startPosition;
         this.goalPosition = goalPosition;
     }
@@ -53,14 +65,30 @@ public class Maze {
         }
     }
 
+    /**
+     * Added an else if the maze[i][j]==5
+     * which means its parts of the solution
+     * this value is setted in RunSearchOnMaze:printSolution
+     */
     public void printColor () {
         for (int i = 0; i < this.mazeArray.length; i++) {
             for (int j = 0; j < mazeArray[i].length; j++) {
-                if (i == startPosition.getRowIndex() && j == startPosition.getColumnIndex()) {//startPosition
-                    System.out.print(" " + "\u001B[33m" + " ");
-                } else if (i == goalPosition.getRowIndex() && j == goalPosition.getColumnIndex()) {//goalPosition
+                if (i == startPosition.getRowIndex() && j == startPosition.getColumnIndex())
+                {//startPosition
+                    System.out.print(" " + "\u001B[40m" + " ");
+                }
+                else if (i == goalPosition.getRowIndex() && j == goalPosition.getColumnIndex())
+                {//goalPosition
                     System.out.print(" " + "\u001B[44m" + " ");
-                } else if (mazeArray[i][j] == 1) System.out.print(" " + "\u001B[45m" + " ");
+                }
+                else if (mazeArray[i][j] == 1)
+                {
+                    System.out.print(" " + "\u001B[45m" + " ");
+                }
+                else if (mazeArray[i][j] == 5)
+                {
+                    System.out.print(" " + "\u001B[43m" + " ");
+                }
                 else System.out.print(" " + "\u001B[107m" + " ");
             }
             System.out.println(" " + "\u001B[107m");
@@ -130,5 +158,11 @@ public class Maze {
     }
 
 
+    public void findColors() {
+        for (int i = 40; i < 50; i++) {
+            System.out.print("Color number " + i + ": " + "\u001B[" + i + "m ");
+            System.out.println();
+        }
+    }
 }
 

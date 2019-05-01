@@ -16,6 +16,10 @@ public class SearchableMaze implements ISearchable
         this.myMaze = myMaze;
     }
 
+    public Maze getMyMaze() {
+        return myMaze;
+    }
+
     @Override
     public AState getStartState() {
         Position startPos = myMaze.getStartPosition();

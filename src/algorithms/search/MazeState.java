@@ -9,6 +9,8 @@ public class MazeState extends AState
     private int height;
     private Position positionState;
 
+
+
     public MazeState(Position positionState, Maze maze) {
         if(positionState == null)
             this.positionState = null;
