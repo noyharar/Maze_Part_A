@@ -8,11 +8,13 @@ public  class MyCompressorOutputStream extends OutputStream{
     private OutputStream out;
     private int saver;
     private int count;
+    private boolean isBiggerThanMaxByte;
 
     public MyCompressorOutputStream(OutputStream out) {
         this.out = out;
         this.count = 0;
         this.saver = 0;
+        this.isBiggerThanMaxByte = false;
     }
 
     public void write(int b){
@@ -22,6 +24,11 @@ public  class MyCompressorOutputStream extends OutputStream{
         else{
             try {
                 out.write(count);
+                if(isBiggerThanMaxByte)
+                {
+                    out.write(-1);
+                    isBiggerThanMaxByte = false;
+                }
                 count = 1;
                 saver = b;
             }
@@ -49,10 +56,32 @@ public  class MyCompressorOutputStream extends OutputStream{
 
         for (int i = index; i < b.length; i++) {
                 write(b[i]);
+                if(count == 127)
+                {
+                    try {
+                        if(!isBiggerThanMaxByte)
+                        {
+                            isBiggerThanMaxByte = true;
+                            out.write(-1);
+                        }
+
+                        out.write(count);
+                        count = 0;
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
         }
 
         try {
             out.write(count);
+            if(isBiggerThanMaxByte)
+            {
+                out.write(-1);
+                isBiggerThanMaxByte = false;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

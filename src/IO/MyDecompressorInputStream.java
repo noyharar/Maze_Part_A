@@ -6,9 +6,11 @@ import java.io.InputStream;
 public class MyDecompressorInputStream extends InputStream {
 
     private  InputStream in;
+    private boolean isBiggerThanMaxByte;
 
     public MyDecompressorInputStream(InputStream in) {
         this.in = in;
+        isBiggerThanMaxByte = false;
     }
 
 
@@ -19,35 +21,46 @@ public class MyDecompressorInputStream extends InputStream {
 
     public int read(byte[] b) throws IOException {
         byte[] copyByte = new byte[b.length];
-            int read = in.read(copyByte);
+        int read = in.read(copyByte);
             /*while(read != -1){
                 read = in.read(copyByte)
             }
              */
-            int countM1 = 0;
-            int index = 0;
+        int countM1 = 0;
+        int index = 0;
 
-            while (countM1 < 6) {
-                b[index] = copyByte[index];
-                if (b[index] == -1) {
-                    countM1++;
-                }
-                index++;
+        while (countM1 < 6)
+        {
+            b[index] = copyByte[index];
+            if (b[index] == -1)
+            {
+                countM1++;
             }
-            byte num = 0;
-            int inForIndex = index;
-            for (int i = index; i < b.length; ) {
-                for (int j = 0; j < copyByte[inForIndex]; j++) {
-                    b[i] = num;
-                    i++;
-                }
+            index++;
+        }
+
+        byte num = 0;
+        int inForIndex = index;
+        for (int i = index; i < b.length; ) {
+            // Iterates over every
+            for (int j = 0; j < copyByte[inForIndex]; j++) {
+                b[i] = num;
+                i++;
+            }
+            if(copyByte[inForIndex] == -1)
+            {
+                isBiggerThanMaxByte = !isBiggerThanMaxByte;
+            }
+            if(!isBiggerThanMaxByte)
+            {
                 if (num == 0) {
                     num = 1;
                 } else {
                     num = 0;
                 }
-                inForIndex++;
             }
+            inForIndex++;
+        }
         return read;
     }
 
