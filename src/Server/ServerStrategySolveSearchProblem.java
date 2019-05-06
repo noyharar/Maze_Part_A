@@ -27,7 +27,6 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
 
                 if(bankSolutions.containsValue(clientMazeToSolve)){
                     int id = 0;
-                    //TODO: get solution from file with ID bankSolutions.getID
                     for (int i = 0; i < bankSolutions.size(); i++) {
                         if(bankSolutions.get(i).equals(clientMazeToSolve))
                         {
@@ -49,7 +48,6 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
                     BestFirstSearch seaechAlgo = new BestFirstSearch();
                     SearchableMaze searchableMaze = new SearchableMaze(clientMazeToSolve);
                     solution = seaechAlgo.solve(searchableMaze);
-                    //TODO: save solution to file with ID bankSolution.getID
                     File tempDir = new File(tempDirectoryPath);
                     if(!tempDir.exists())
                     {
