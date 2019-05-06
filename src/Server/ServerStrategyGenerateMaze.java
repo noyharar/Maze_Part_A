@@ -4,10 +4,7 @@ import IO.MyCompressorOutputStream;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
 
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 public class ServerStrategyGenerateMaze implements IServerStrategy {
 
@@ -17,18 +14,26 @@ public class ServerStrategyGenerateMaze implements IServerStrategy {
         {
             ObjectInputStream fromClient = new ObjectInputStream(inFromClient);
             ObjectOutputStream toClient = new ObjectOutputStream(outToClient);
+            //read from client the maze dimensions
             Object mazeSizes = fromClient.readObject();
-
+            //check array type
             if(mazeSizes instanceof int[])
             {
                 int[] clientMazeSizes = (int[]) mazeSizes;
+                //create new maze
                 MyMazeGenerator genMaze = new MyMazeGenerator();
-                MyCompressorOutputStream compMaze = new MyCompressorOutputStream(toClient);
                 Maze myGeneratedMaze = genMaze.generate(clientMazeSizes[0],clientMazeSizes[1]);
-                myGeneratedMaze.print();
-                byte[] test = myGeneratedMaze.toByteArray();
-                compMaze.write(test);
+
+                ByteArrayOutputStream outByte = new ByteArrayOutputStream();
+                MyCompressorOutputStream compMaze = new MyCompressorOutputStream(outByte);
+                //send the maze to compressor
                 compMaze.flush();
+                compMaze.write(myGeneratedMaze.toByteArray());
+                compMaze.flush();
+                //write from server to client
+                toClient.flush();
+                toClient.writeObject(outByte.toByteArray());
+                toClient.flush();
             }
         }
 
