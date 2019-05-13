@@ -237,7 +237,7 @@ private static void CommunicateWithServer_SolveSearchProblem(Maze myMaze) {
                     ObjectOutputStream toServer = new ObjectOutputStream(outToServer);
                     ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
                     toServer.flush();
-                    myMaze.print();
+//                    myMaze.print();
                     toServer.writeObject(myMaze); //send maze to server
                     toServer.flush();
                     Solution mazeSolution = (Solution) fromServer.readObject(); //read generated maze (compressed with MyCompressor) from server

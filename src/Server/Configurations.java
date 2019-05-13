@@ -20,9 +20,9 @@ public class Configurations {
         try (OutputStream output = new FileOutputStream("resources/config.properties")) {
 
             // set the properties value
-            prop.setProperty("GeneratorType", "myMazeGenerator");
-            prop.setProperty("ThreadPoolNum", "100");
-            prop.setProperty("SolverType", "best");
+            prop.setProperty("GeneratorType", "simple");
+            prop.setProperty("ThreadPoolNum", "10");
+            prop.setProperty("SolverType", "dfs");
             prop.setProperty("SolverTypePort", "5401");
             prop.setProperty("GeneratorTypePort", "5400");
             prop.setProperty("GeneratorTypeListeningInterval", "1000");

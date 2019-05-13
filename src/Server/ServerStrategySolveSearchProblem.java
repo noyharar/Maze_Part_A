@@ -29,7 +29,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             {
                 Solution solution = null;
                 Maze clientMazeToSolve = (Maze) mazeSizes;
-                clientMazeToSolve.print();
+//                clientMazeToSolve.print();
 //                if(!bankSolutions.isEmpty()){
 //                    System.out.println("=====================================================================");
 ////                    bankSolutions.get(0).print();
