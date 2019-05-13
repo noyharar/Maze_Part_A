@@ -10,7 +10,7 @@ public class Server extends Thread {
     private int listeningIntervalMS;
     private IServerStrategy serverStrategy;
     private volatile boolean stop;
-  //  private static final Logger LOG = LogManager.getLogger(); //Log4j2
+//    private static final Logger LOG = LogManager.getLogger(); //Log4j2
 
     public Server(int port, int listeningIntervalMS, IServerStrategy serverStrategy) {
         this.port = port;
@@ -30,14 +30,18 @@ public class Server extends Thread {
 
             ServerSocket serverSocket = new ServerSocket(port);
             serverSocket.setSoTimeout(listeningIntervalMS);
+            System.out.println(String.format("Server starter at %s!", serverSocket));
 //            LOG.info(String.format("Server starter at %s!", serverSocket));
+            System.out.println(String.format("Server's Strategy: %s", serverStrategy.getClass().getSimpleName()));
 //            LOG.info(String.format("Server's Strategy: %s", serverStrategy.getClass().getSimpleName()));
+            System.out.println("Server is waiting for clients...");
 //            LOG.info("Server is waiting for clients...");
             System.out.println("Server is waiting for clients...");
             while (!stop) {
                 try {
                     Socket clientSocket = serverSocket.accept(); // Accepts client
 
+                    System.out.println(String.format("Client excepted: %s", clientSocket));
 //                    LOG.info(String.format("Client excepted: %s", clientSocket));
                     try {
                         serverStrategy.serverStrategy(clientSocket.getInputStream(), clientSocket.getOutputStream());

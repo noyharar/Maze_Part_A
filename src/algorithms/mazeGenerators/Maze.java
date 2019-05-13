@@ -1,8 +1,11 @@
 package algorithms.mazeGenerators;
 
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 
-public class Maze {
+public class Maze implements Serializable {
 
     private int[][] mazeArray;
     private Position startPosition;
@@ -20,6 +23,30 @@ public class Maze {
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Maze maze = (Maze) o;
+
+        for(int i = 0; i < mazeArray.length; i++){
+            for (int j = 0; j < mazeArray[0].length; j++) {
+                if(mazeArray[i][j] != ((Maze) o).mazeArray[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return height == maze.height &&
+                width == maze.width &&
+                startPosition != null && startPosition.equals(maze.startPosition) &&
+                goalPosition != null && goalPosition.equals(maze.goalPosition);}
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(startPosition, goalPosition, height, width, BYTE_SIZE);
+        result = 31 * result + Arrays.hashCode(mazeArray);
+        return result;
+    }
 
     public Maze(int[][] maze){
         this.mazeArray = maze;

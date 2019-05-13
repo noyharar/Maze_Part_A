@@ -2,9 +2,11 @@ package IO;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public  class MyCompressorOutputStream extends OutputStream{
-
+    private List<Byte> temp;
     private OutputStream out;
     private int saver;
     private int count;
@@ -15,7 +17,15 @@ public  class MyCompressorOutputStream extends OutputStream{
         this.count = 0;
         this.saver = 0;
         this.isBiggerThanMaxByte = false;
+        this.temp = new ArrayList<>();
     }
+
+//    public void write(int b){
+//        try{
+//        out.write(b);
+//        }
+//        catch (IOException e){}
+//    }
 
     public void write(int b){
         if(b == saver){
@@ -23,17 +33,18 @@ public  class MyCompressorOutputStream extends OutputStream{
         }
         else{
             try {
-                out.write(count);
+                temp.add((byte)count);
+                //out.write(count);
                 if(isBiggerThanMaxByte)
                 {
-                    out.write(-1);
+                    temp.add((byte)-1);
+                    // out.write(-1);
                     isBiggerThanMaxByte = false;
                 }
                 count = 1;
                 saver = b;
             }
             catch (Exception e){
-
             }
         }
     }
@@ -44,7 +55,8 @@ public  class MyCompressorOutputStream extends OutputStream{
 
         while(countM1 < 6){
             try {
-                out.write(b[index]);
+                temp.add(b[index]);
+                //out.write(b[index]);
             }
             catch (Exception e){
             }
@@ -55,41 +67,60 @@ public  class MyCompressorOutputStream extends OutputStream{
         }
 
         for (int i = index; i < b.length; i++) {
-                write(b[i]);
+                 write(b[i]);
                 if(count == 127)
                 {
-                    try {
+//                    try {
                         if(!isBiggerThanMaxByte)
                         {
                             isBiggerThanMaxByte = true;
-                            out.write(-1);
+                            temp.add((byte)-1);
+                            //   out.write(-1);
                         }
-
-                        out.write(count);
+                        temp.add((byte)count);
+                        //out.write(count);
                         count = 0;
-                    }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
+//                    }
+//                    catch (IOException e)
+//                    {
+//                        e.printStackTrace();
+//                    }
                 }
         }
 
-        try {
-            out.write(count);
+//        try {
+            temp.add((byte)count);
+//            out.write(count);
             if(isBiggerThanMaxByte)
             {
-                out.write(-1);
+                temp.add((byte)-1);
+//                out.write(-1);
                 isBiggerThanMaxByte = false;
             }
-        } catch (IOException e) {
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        byte[] finalByte = new byte[temp.size()];
+        for(int i = 0; i < temp.size(); i++) {
+            finalByte[i] = temp.get(i);
+        }
+        try
+        {
+            out.write(finalByte);
+        }
+        catch (IOException e){
             e.printStackTrace();
         }
+        temp = new ArrayList<>();
     }
 
     public OutputStream getOutputStream() {
         return out;
     }
 
-
+    @Override
+    public void flush() throws IOException {
+        out.flush();
+    }
 }

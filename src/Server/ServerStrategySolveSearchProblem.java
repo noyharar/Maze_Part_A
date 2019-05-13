@@ -6,11 +6,13 @@ import algorithms.search.SearchableMaze;
 import algorithms.search.Solution;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ServerStrategySolveSearchProblem implements IServerStrategy {
 
-    private Map<Integer,Maze> bankSolutions;
+    private Map<Integer,Maze> bankSolutions = new HashMap<>();
+
     @Override
     public void serverStrategy(InputStream inFromClient, OutputStream outToClient) {
         try
@@ -24,7 +26,11 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             {
                 Solution solution = null;
                 Maze clientMazeToSolve = (Maze) mazeSizes;
-
+                clientMazeToSolve.print();
+                if(!bankSolutions.isEmpty()){
+                    System.out.println("=====================================================================");
+                    bankSolutions.get(0).print();
+                }
                 if(bankSolutions.containsValue(clientMazeToSolve)){
                     int id = 0;
                     for (int i = 0; i < bankSolutions.size(); i++) {
@@ -53,7 +59,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
                     {
                         tempDir.mkdir();
                     }
-                    File solFile = new File(tempDir.getName() + "\\" + bankSolutions.size());
+                    File solFile = new File(tempDir.getAbsolutePath() + "\\" + bankSolutions.size());
                     if(!solFile.exists())
                     {
                         solFile.createNewFile();
@@ -66,12 +72,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
                 }
                 toClient.flush();
                 toClient.writeObject(solution);
-
-
-
-
-
-
+                toClient.flush();
             }
         }
 
