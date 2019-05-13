@@ -28,15 +28,13 @@ public class BreadthFirstSearch extends ASearchingAlgorithm
 
     /**
      *solve problem with breadth first search
-     * @param  s
+     * @param s - Searchable something
      * @return solution
      */
     @Override
     public Solution solve(ISearchable s)
     {
-        //TODO: Ask if the cross moving should be the same in Best and in Breadth or not
         // Yes it Should, obvious by Aviad...
-        //TODO: Is there a possiblity that Breadth evaluated less Nodes than Best?
         // Sounds not legit, best should always evaluate less nodes
 
 

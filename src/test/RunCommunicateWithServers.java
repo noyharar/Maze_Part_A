@@ -15,7 +15,8 @@ import java.util.ArrayList;
 
 
 public class RunCommunicateWithServers {
-    public static Maze myMaze = new MyMazeGenerator().generate(50, 50);
+//    public static Maze myMaze = new MyMazeGenerator().generate(50, 50);
+    private static final int NumOfClientThreads = 1000;
     public static void main(String[] args) {
 
         //Initializing servers
@@ -29,9 +30,32 @@ public class RunCommunicateWithServers {
         //stringReverserServer.start();
 
         //Communicating with servers
-        CommunicateWithServer_MazeGenerating();
+        Thread[] mazeGeneratingThreads = new Thread[NumOfClientThreads];
+        Thread[] mazeSolvingThreads = new Thread[NumOfClientThreads];
+
+        for (int i = 0; i < mazeGeneratingThreads.length; i++) {
+            mazeGeneratingThreads[i] = new ThreadMazeGenerating(i);
+            mazeSolvingThreads[i] = new ThreadSolveSearchProblem(i);
+        }
+        //Threads start
+        for (int i = 0; i < mazeGeneratingThreads.length; i++) {
+//            System.out.println("\nMazeGenerating | Thread index: "+i+" Thread Id: "+ Thread.currentThread().getId());
+            mazeGeneratingThreads[i].start();
+            mazeSolvingThreads[i].start();
+        }
+        //Wait for all the threads to join
+        for (int i = 0; i < mazeGeneratingThreads.length; i++) {
+            try{
+                mazeGeneratingThreads[i].join();
+                mazeSolvingThreads[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+//        CommunicateWithServer_MazeGenerating();
 //        CommunicateWithServer_SolveSearchProblem();
-        CommunicateWithServer_SolveSearchProblem();
+//        CommunicateWithServer_SolveSearchProblem();
         //CommunicateWithServer_StringReverser();
 
         //Stopping all servers
@@ -39,6 +63,45 @@ public class RunCommunicateWithServers {
         solveSearchProblemServer.stop();
         //stringReverserServer.stop();
     }
+
+    private static class ThreadMazeGenerating extends Thread {
+        private int threadId;
+
+        public ThreadMazeGenerating(int threadId) {
+            this.threadId = threadId;
+        }
+
+        public int getThreadId() {
+            return threadId;
+        }
+
+        public void run(){
+            CommunicateWithServer_MazeGenerating(50,50);
+        }
+    }
+
+
+    private static class ThreadSolveSearchProblem extends Thread {
+        private int threadId;
+        private Maze maze;
+
+        public ThreadSolveSearchProblem(int threadId, Maze maze) {
+            this.threadId = threadId;
+            this.maze = maze;
+        }
+
+        public ThreadSolveSearchProblem(int threadId) {
+            this.threadId = threadId;
+            MyMazeGenerator mazeGenerator = new MyMazeGenerator();
+            this.maze = mazeGenerator.generate(50,50);
+        }
+
+        public void run(){
+            CommunicateWithServer_SolveSearchProblem(maze);
+        }
+    }
+
+
 /*
     private static void CommunicateWithServer_MazeGenerating() {
         try {
@@ -95,7 +158,7 @@ public class RunCommunicateWithServers {
     }
 */
 
-    private static void CommunicateWithServer_MazeGenerating() {
+    private static void CommunicateWithServer_MazeGenerating(int row, int col) {
         try {
             Client client = new Client(InetAddress.getLocalHost(), 5400, new IClientStrategy() {
                 @Override
@@ -104,15 +167,15 @@ public class RunCommunicateWithServers {
                         ObjectOutputStream toServer = new ObjectOutputStream(outToServer);
                         ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
                         toServer.flush();
-                        int[] mazeDimensions = new int[]{50, 50};
+                        int[] mazeDimensions = new int[]{row, col};
                         toServer.writeObject(mazeDimensions); //send maze dimensions to server
                         toServer.flush();
                         byte[] compressedMaze = (byte[]) fromServer.readObject(); //read generated maze (compressed with MyCompressor) from server
                         InputStream is = new MyDecompressorInputStream(new ByteArrayInputStream(compressedMaze));
-                        byte[] decompressedMaze = new byte[50*50+12 /*CHANGE SIZE ACCORDING TO YOU MAZE SIZE*/]; //allocating byte[] for the decompressed maze -
+                        byte[] decompressedMaze = new byte[row*col+12 /*CHANGE SIZE ACCORDING TO YOU MAZE SIZE*/]; //allocating byte[] for the decompressed maze -
                         is.read(decompressedMaze); //Fill decompressedMaze with bytes
                         Maze maze = new Maze(decompressedMaze);
-                        maze.print();
+//                        maze.print();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -159,7 +222,7 @@ public class RunCommunicateWithServers {
         }
     }
 */
-private static void CommunicateWithServer_SolveSearchProblem() {
+private static void CommunicateWithServer_SolveSearchProblem(Maze myMaze) {
     try {
         Client client = new Client(InetAddress.getLocalHost(), 5401, new IClientStrategy() {
             @Override
@@ -168,8 +231,6 @@ private static void CommunicateWithServer_SolveSearchProblem() {
                     ObjectOutputStream toServer = new ObjectOutputStream(outToServer);
                     ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
                     toServer.flush();
-//                    MyMazeGenerator mg = new MyMazeGenerator();
-//                    myMaze = mg.generate(50, 50);
                     myMaze.print();
                     toServer.writeObject(myMaze); //send maze to server
                     toServer.flush();
@@ -191,32 +252,33 @@ private static void CommunicateWithServer_SolveSearchProblem() {
         e.printStackTrace();
     }
 }
-    private static void CommunicateWithServer_StringReverser() {
-        try {
-            Client client = new Client(InetAddress.getLocalHost(), 5402, new IClientStrategy() {
-                @Override
-                public void clientStrategy(InputStream inFromServer, OutputStream outToServer) {
-                    try {
-                        BufferedReader fromServer = new BufferedReader(new InputStreamReader(inFromServer));
-                        PrintWriter toServer = new PrintWriter(outToServer);
-
-                        String message = "Client Message";
-                        String serverResponse;
-                        toServer.write(message + "\n");
-                        toServer.flush();
-                        serverResponse = fromServer.readLine();
-                        System.out.println(String.format("Server response: %s", serverResponse));
-                        toServer.flush();
-                        fromServer.close();
-                        toServer.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            client.communicateWithServer();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-    }
+//    private static void CommunicateWithServer_StringReverser() {
+//        try {
+//            Client client = new Client(InetAddress.getLocalHost(), 5402, new IClientStrategy() {
+//                @Override
+//                public void clientStrategy(InputStream inFromServer, OutputStream outToServer) {
+//                    try {
+//                        BufferedReader fromServer = new BufferedReader(new InputStreamReader(inFromServer));
+//                        PrintWriter toServer = new PrintWriter(outToServer);
+//
+//                        String message = "Client Message";
+//                        String serverResponse;
+//                        toServer.write(message + "\n");
+//                        toServer.flush();
+//                        serverResponse = fromServer.readLine();
+//                        System.out.println(String.format("Server response: %s", serverResponse));
+//                        toServer.flush();
+//                        fromServer.close();
+//                        toServer.close();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            });
+//            client.communicateWithServer();
+//        } catch (UnknownHostException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }
+

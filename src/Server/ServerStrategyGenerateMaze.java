@@ -12,11 +12,13 @@ public class ServerStrategyGenerateMaze implements IServerStrategy {
     public void serverStrategy(InputStream inFromClient, OutputStream outToClient) {
         try
         {
+            System.out.println("Server: mazeGeneratingStrategy started");
             ObjectInputStream fromClient = new ObjectInputStream(inFromClient);
             ObjectOutputStream toClient = new ObjectOutputStream(outToClient);
             //read from client the maze dimensions
             Object mazeSizes = fromClient.readObject();
             //check array type
+//            System.out.println("Server: mazeGeneratingStrategy started");
             if(mazeSizes instanceof int[])
             {
                 int[] clientMazeSizes = (int[]) mazeSizes;
@@ -30,7 +32,7 @@ public class ServerStrategyGenerateMaze implements IServerStrategy {
                 compMaze.flush();
                 compMaze.write(myGeneratedMaze.toByteArray());
                 compMaze.flush();
-                //write from server to client
+                //helpToWrite from server to client
                 toClient.flush();
                 toClient.writeObject(outByte.toByteArray());
                 toClient.flush();

@@ -20,25 +20,25 @@ public  class MyCompressorOutputStream extends OutputStream{
         this.temp = new ArrayList<>();
     }
 
-//    public void write(int b){
-//        try{
-//        out.write(b);
-//        }
-//        catch (IOException e){}
-//    }
-
     public void write(int b){
+        try{
+        out.write(b);
+        }
+        catch (IOException e){}
+    }
+
+    public void helpToWrite(int b){
         if(b == saver){
             count++;
         }
         else{
             try {
                 temp.add((byte)count);
-                //out.write(count);
+                //out.helpToWrite(count);
                 if(isBiggerThanMaxByte)
                 {
                     temp.add((byte)-1);
-                    // out.write(-1);
+                    // out.helpToWrite(-1);
                     isBiggerThanMaxByte = false;
                 }
                 count = 1;
@@ -56,7 +56,7 @@ public  class MyCompressorOutputStream extends OutputStream{
         while(countM1 < 6){
             try {
                 temp.add(b[index]);
-                //out.write(b[index]);
+                //out.helpToWrite(b[index]);
             }
             catch (Exception e){
             }
@@ -67,7 +67,7 @@ public  class MyCompressorOutputStream extends OutputStream{
         }
 
         for (int i = index; i < b.length; i++) {
-                 write(b[i]);
+                 helpToWrite(b[i]);
                 if(count == 127)
                 {
 //                    try {
@@ -75,10 +75,10 @@ public  class MyCompressorOutputStream extends OutputStream{
                         {
                             isBiggerThanMaxByte = true;
                             temp.add((byte)-1);
-                            //   out.write(-1);
+                            //   out.helpToWrite(-1);
                         }
                         temp.add((byte)count);
-                        //out.write(count);
+                        //out.helpToWrite(count);
                         count = 0;
 //                    }
 //                    catch (IOException e)
@@ -90,11 +90,11 @@ public  class MyCompressorOutputStream extends OutputStream{
 
 //        try {
             temp.add((byte)count);
-//            out.write(count);
+//            out.helpToWrite(count);
             if(isBiggerThanMaxByte)
             {
                 temp.add((byte)-1);
-//                out.write(-1);
+//                out.helpToWrite(-1);
                 isBiggerThanMaxByte = false;
             }
 //        } catch (IOException e) {
