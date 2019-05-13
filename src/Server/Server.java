@@ -15,13 +15,14 @@ public class Server {
     private IServerStrategy serverStrategy;
     private volatile boolean stop;
     private ThreadPoolExecutor myPoolOfThreads;
+
 //    private static final Logger LOG = LogManager.getLogger(); //Log4j2
 
     public Server(int port, int listeningInterval, IServerStrategy serverStrategy) {
         this.port = port;
         this.listeningInterval = listeningInterval;
         this.serverStrategy = serverStrategy;
-        myPoolOfThreads = (ThreadPoolExecutor) Executors.newFixedThreadPool(5);
+        myPoolOfThreads = (ThreadPoolExecutor) Executors.newFixedThreadPool(Integer.parseInt(Configurations.getInstance().getProperty("ThreadPoolNum")));
     }
 
     public void start() {

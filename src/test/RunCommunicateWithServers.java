@@ -12,16 +12,22 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-
+import java.util.Properties;
+import Server.Configurations;
 
 public class RunCommunicateWithServers {
 //    public static Maze myMaze = new MyMazeGenerator().generate(50, 50);
-    private static final int NumOfClientThreads = 1000;
+    private static final int NumOfClientThreads = 10;
     public static void main(String[] args) {
+        int generatePortNum,generateInterval, solverPortNum, solverInterval;
+        generatePortNum = Integer.parseInt(Configurations.getInstance().getProperty("GeneratorTypePort"));
+        generateInterval = Integer.parseInt(Configurations.getInstance().getProperty("GeneratorTypeListeningInterval"));
+        solverPortNum = Integer.parseInt(Configurations.getInstance().getProperty("SolverTypePort"));
+        solverInterval = Integer.parseInt(Configurations.getInstance().getProperty("SolverTypeListeningInterval"));
 
         //Initializing servers
-        Server mazeGeneratingServer = new Server(5400, 1000, new ServerStrategyGenerateMaze());
-        Server solveSearchProblemServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
+        Server mazeGeneratingServer = new Server(generatePortNum, generateInterval, new ServerStrategyGenerateMaze());
+        Server solveSearchProblemServer = new Server(solverPortNum, solverInterval, new ServerStrategySolveSearchProblem());
         //Server stringReverserServer = new Server(5402, 1000, new ServerStrategyStringReverser());
 
         //Starting  servers

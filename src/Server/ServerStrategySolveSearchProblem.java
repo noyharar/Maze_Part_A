@@ -1,9 +1,7 @@
 package Server;
 
 import algorithms.mazeGenerators.Maze;
-import algorithms.search.BestFirstSearch;
-import algorithms.search.SearchableMaze;
-import algorithms.search.Solution;
+import algorithms.search.*;
 
 import java.io.*;
 import java.util.HashMap;
@@ -17,20 +15,25 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
     public void serverStrategy(InputStream inFromClient, OutputStream outToClient) {
         try
         {
+            ASearchingAlgorithm seaechAlgo = null;
             ObjectInputStream fromClient = new ObjectInputStream(inFromClient);
             ObjectOutputStream toClient = new ObjectOutputStream(outToClient);
             Object mazeSizes = fromClient.readObject();
             String tempDirectoryPath = System.getProperty("java.io.tmpdir");
+            String solverType = Configurations.getInstance().getProperty("SolverType");
+
+
+
 
             if(mazeSizes instanceof Maze)
             {
                 Solution solution = null;
                 Maze clientMazeToSolve = (Maze) mazeSizes;
                 clientMazeToSolve.print();
-                if(!bankSolutions.isEmpty()){
-                    System.out.println("=====================================================================");
-                    bankSolutions.get(0).print();
-                }
+//                if(!bankSolutions.isEmpty()){
+//                    System.out.println("=====================================================================");
+////                    bankSolutions.get(0).print();
+//                }
                 if(bankSolutions.containsValue(clientMazeToSolve)){
                     int id = 0;
                     for (int i = 0; i < bankSolutions.size(); i++) {
@@ -51,7 +54,23 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
                 }
                 else
                 {
-                    BestFirstSearch seaechAlgo = new BestFirstSearch();
+                    if (solverType.toLowerCase().contains("best"))
+                    {
+                       seaechAlgo = new BestFirstSearch();
+                    }
+                    else if (solverType.toLowerCase().contains("bfs") || solverType.toLowerCase().contains("breadth"))
+                    {
+                       seaechAlgo = new BreadthFirstSearch();
+                    }
+                    else if (solverType.toLowerCase().contains("dfs") || solverType.toLowerCase().contains("Depth"))
+                    {
+                       seaechAlgo = new DepthFirstSearch();
+                    }
+                    else
+                    {
+                        throw new Exception("Wrong solver type in configurations file");
+                    }
+
                     SearchableMaze searchableMaze = new SearchableMaze(clientMazeToSolve);
                     solution = seaechAlgo.solve(searchableMaze);
                     File tempDir = new File(tempDirectoryPath);
@@ -76,6 +95,8 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             }
         }
 
-        catch (Exception e) {}
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
