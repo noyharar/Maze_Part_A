@@ -35,8 +35,8 @@ public class RunCommunicateWithServers {
         //CommunicateWithServer_StringReverser();
 
         //Stopping all servers
-        mazeGeneratingServer.stopServer();
-        solveSearchProblemServer.stopServer();
+        mazeGeneratingServer.stop();
+        solveSearchProblemServer.stop();
         //stringReverserServer.stop();
     }
 /*
