@@ -11,7 +11,7 @@ public class ServerStrategyGenerateMaze implements IServerStrategy {
     public void serverStrategy(InputStream inFromClient, OutputStream outToClient) {
         try
         {
-            System.out.println("Server: mazeGeneratingStrategy started");
+//            System.out.println("Server: mazeGeneratingStrategy started");
             String generatorType = Configurations.getInstance().getProperty("GeneratorType");
             ObjectInputStream fromClient = new ObjectInputStream(inFromClient);
             ObjectOutputStream toClient = new ObjectOutputStream(outToClient);
@@ -32,13 +32,10 @@ public class ServerStrategyGenerateMaze implements IServerStrategy {
                 {
                     genMaze = new SimpleMazeGenerator();
                 }
-                else if(generatorType.toLowerCase().contains("mymaze"))
-                {
-                    genMaze = new MyMazeGenerator();
-                }
                 else
                 {
-                    throw new Exception("Wrong generator type");
+                    genMaze = new MyMazeGenerator();
+                    //throw new Exception("Wrong generator type");
                 }
                 Maze myGeneratedMaze = genMaze.generate(clientMazeSizes[0],clientMazeSizes[1]);
 

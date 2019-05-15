@@ -1,5 +1,7 @@
 package Server;
 
+import IO.MyCompressorOutputStream;
+import IO.MyDecompressorInputStream;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.*;
 
@@ -9,7 +11,28 @@ import java.util.Map;
 
 public class ServerStrategySolveSearchProblem implements IServerStrategy {
 
-    private Map<Integer,Maze> bankSolutions = new HashMap<>();
+    private Map<Integer,Maze> bankSolutions;
+    private String tempDirectoryPath;
+    private String solverType;
+    private File solutionDir;
+    private final Object lockBank = new Object();
+    private final Object lockLoadFiles = new Object();
+
+    public ServerStrategySolveSearchProblem() {
+        this.bankSolutions = new HashMap<>();
+        this.tempDirectoryPath = System.getProperty("java.io.tmpdir");
+        this.solverType = Configurations.getInstance().getProperty("SolverType");
+
+
+        File tempDir = new File(tempDirectoryPath);
+        if(!tempDir.exists())
+        {
+            tempDir.mkdir();
+        }
+        this.solutionDir = new File(tempDir.getAbsolutePath() + "\\solverStrategySolutions");
+        checkIfSolutionExists(solutionDir,bankSolutions);
+
+    }
 
     @Override
     public void serverStrategy(InputStream inFromClient, OutputStream outToClient) {
@@ -18,22 +41,16 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             ASearchingAlgorithm seaechAlgo = null;
             ObjectInputStream fromClient = new ObjectInputStream(inFromClient);
             ObjectOutputStream toClient = new ObjectOutputStream(outToClient);
+
+
+
+
+
             Object mazeSizes = fromClient.readObject();
-            String tempDirectoryPath = System.getProperty("java.io.tmpdir");
-            String solverType = Configurations.getInstance().getProperty("SolverType");
-
-
-
-
             if(mazeSizes instanceof Maze)
             {
                 Solution solution = null;
                 Maze clientMazeToSolve = (Maze) mazeSizes;
-//                clientMazeToSolve.print();
-//                if(!bankSolutions.isEmpty()){
-//                    System.out.println("=====================================================================");
-////                    bankSolutions.get(0).print();
-//                }
                 if(bankSolutions.containsValue(clientMazeToSolve)){
                     int id = 0;
                     for (int i = 0; i < bankSolutions.size(); i++) {
@@ -46,8 +63,11 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
                     File solvedFile = new File(tempDirectoryPath + "\\" + id);
                     ObjectInputStream readSolvedSolution = new ObjectInputStream(new FileInputStream(solvedFile));
                     Object readSolution = readSolvedSolution.readObject();
-                    if (readSolution instanceof Solution)
-                        solution = (Solution)readSolution;
+                    if(!(readSolution instanceof  Solution))
+                    {
+                        readSolution = readSolvedSolution.readObject();
+                    }
+                    solution = (Solution)readSolution;
 
                     readSolvedSolution.close();
 
@@ -56,47 +76,137 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
                 {
                     if (solverType.toLowerCase().contains("best"))
                     {
-                       seaechAlgo = new BestFirstSearch();
+                        seaechAlgo = new BestFirstSearch();
                     }
                     else if (solverType.toLowerCase().contains("bfs") || solverType.toLowerCase().contains("breadth"))
                     {
-                       seaechAlgo = new BreadthFirstSearch();
+                        seaechAlgo = new BreadthFirstSearch();
                     }
                     else if (solverType.toLowerCase().contains("dfs") || solverType.toLowerCase().contains("Depth"))
                     {
-                       seaechAlgo = new DepthFirstSearch();
+                        seaechAlgo = new DepthFirstSearch();
                     }
                     else
                     {
-                        throw new Exception("Wrong solver type in configurations file");
+                        seaechAlgo = new BestFirstSearch();
+                        //throw new Exception("Wrong solver type in configurations file");
                     }
 
                     SearchableMaze searchableMaze = new SearchableMaze(clientMazeToSolve);
                     solution = seaechAlgo.solve(searchableMaze);
-                    File tempDir = new File(tempDirectoryPath);
-                    if(!tempDir.exists())
+
+                    synchronized (bankSolutions)
                     {
-                        tempDir.mkdir();
+//                        System.out.println("ServerStrategy: Enterd Sync Block");
+                        File solFile = new File(solutionDir.getAbsolutePath() + "\\" + bankSolutions.size());
+                        if(!solFile.exists())
+                        {
+                            solFile.createNewFile();
+                        }
+                        else
+                        {
+                            System.out.println("Found Duplicate Files in wrong place");
+                        }
+                        ObjectOutputStream toSolutionFile = new ObjectOutputStream(new FileOutputStream(solFile));
+
+                        ByteArrayOutputStream outByte = new ByteArrayOutputStream();
+                        MyCompressorOutputStream compMaze = new MyCompressorOutputStream(outByte);
+                        //send the maze to compressor
+                        compMaze.flush();
+                        compMaze.write(clientMazeToSolve.toByteArray());
+                        compMaze.flush();
+
+
+                        toSolutionFile.flush();
+                        toSolutionFile.writeObject(outByte.toByteArray());
+                        toSolutionFile.writeObject(solution);
+                        toSolutionFile.flush();
+                        toSolutionFile.close();
+                        bankSolutions.put(bankSolutions.size(),clientMazeToSolve);
+//                        System.out.println("ServerStrategy: Exiting Sync Block" );
                     }
-                    File solFile = new File(tempDir.getAbsolutePath() + "\\" + bankSolutions.size());
-                    if(!solFile.exists())
-                    {
-                        solFile.createNewFile();
-                    }
-                    ObjectOutputStream toSolutionFile = new ObjectOutputStream(new FileOutputStream(solFile));
-                    toSolutionFile.writeObject(solution);
-                    toSolutionFile.close();
-                    bankSolutions.put(bankSolutions.size(),clientMazeToSolve);
 
                 }
                 toClient.flush();
                 toClient.writeObject(solution);
                 toClient.flush();
             }
+
         }
 
         catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void checkIfSolutionExists(File solutionDir, Map<Integer,Maze> bankSolutions) {
+        if(!solutionDir.exists())
+        {
+            solutionDir.mkdir();
+        }
+        else
+        {
+            try
+            {
+
+                File[] solutions = solutionDir.listFiles();
+                if(solutions != null)
+                {
+                    synchronized (lockLoadFiles)
+                    {
+                        for (File sol :
+                                solutions)
+                        {
+                            ObjectInputStream readSol = new ObjectInputStream(new FileInputStream(sol));
+                            Object maze = readSol.readObject();
+                            if(maze instanceof byte[])
+                            {
+//                                System.out.println("Server Strategy: Found solved Maze");
+                                InputStream decomp = new MyDecompressorInputStream(new ByteArrayInputStream((byte[])maze));
+                                int byteRead = 0,counter = 0, height = 0,width = 0;
+                                while (counter < 4)
+                                {
+                                    byteRead = decomp.read();
+                                    if(byteRead == 255)
+                                        counter++;
+                                }
+
+                                while(counter < 6)
+                                {
+                                    byteRead = decomp.read();
+                                    if(byteRead == 255)
+                                    {
+                                        counter++;
+                                    }
+                                    else
+                                    {
+                                        if(counter == 4)
+                                        {
+                                            height += byteRead;
+                                        }
+                                        else if (counter == 5)
+                                        {
+                                            width += byteRead;
+                                        }
+                                    }
+                                }
+
+                                decomp = new MyDecompressorInputStream(new ByteArrayInputStream((byte[])maze));
+                                byte[] mazeArray = new byte[(height*width)+54];
+                                int x = decomp.read(mazeArray);
+                                Maze openedMaze = new Maze(mazeArray);
+                                bankSolutions.put(Integer.parseInt(sol.getName()),openedMaze);
+                            }
+                            readSol.close();
+                        }
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 }

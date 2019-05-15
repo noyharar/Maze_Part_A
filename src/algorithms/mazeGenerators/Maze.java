@@ -29,16 +29,16 @@ public class Maze implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Maze maze = (Maze) o;
 
-        for(int i = 0; i < mazeArray.length; i++){
-            for (int j = 0; j < mazeArray[0].length; j++) {
-                if(mazeArray[i][j] != ((Maze) o).mazeArray[i][j]) {
+        if(height != maze.height || width != maze.width) return false;
+
+        for(int i = 0; i < height; i++){
+            for (int j = 0; j < width; j++) {
+                if(mazeArray[i][j] != maze.mazeArray[i][j]) {
                     return false;
                 }
             }
         }
-        return height == maze.height &&
-                width == maze.width &&
-                startPosition != null && startPosition.equals(maze.startPosition) &&
+        return startPosition != null && startPosition.equals(maze.startPosition) &&
                 goalPosition != null && goalPosition.equals(maze.goalPosition);}
 
     @Override
@@ -98,20 +98,23 @@ public class Maze implements Serializable {
      * print the maze's array
      */
     public void print() {
+        String mazeValues = "";
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
                 if (startPosition.isEqual(row, col)) {
-                    System.out.print("S ");
+                    mazeValues += "S ";
                 } else if (goalPosition.isEqual(row, col)) {
-                    System.out.print("E ");
+                    mazeValues += "E ";
 
                 } else {
-                    System.out.print(mazeArray[row][col] + " ");
+                    mazeValues += mazeArray[row][col] + " ";
                 }
                 //      System.out.print(maze[row][col]);
             }
-            System.out.println();
+            mazeValues += "\n";
         }
+
+        System.out.print(mazeValues);
     }
     /**
      * This Function radomizes all the walls in the maze

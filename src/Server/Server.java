@@ -22,7 +22,8 @@ public class Server {
         this.port = port;
         this.listeningInterval = listeningInterval;
         this.serverStrategy = serverStrategy;
-        myPoolOfThreads = (ThreadPoolExecutor) Executors.newFixedThreadPool(Integer.parseInt(Configurations.getInstance().getProperty("ThreadPoolNum")));
+
+//        myPoolOfThreads = (ThreadPoolExecutor) Executors.newFixedThreadPool(5);
     }
 
     public void start() {
@@ -35,10 +36,12 @@ public class Server {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             serverSocket.setSoTimeout(listeningInterval);
+            int poolNum = /*Runtime.getRuntime().availableProcessors();*/Integer.parseInt(Configurations.getInstance().getProperty("ThreadPoolNum"));
+            myPoolOfThreads = (ThreadPoolExecutor) Executors.newFixedThreadPool(poolNum);
 //            LOG.info(String.format("Server starter at %s!", serverSocket));
 //            LOG.info(String.format("Server's Strategy: %s", serverStrategy.getClass().getSimpleName()));
 //            LOG.info("Server is waiting for clients...");
-            while (!stop) {
+            while (!stop ) {
                 try {
                     Socket clientSocket = serverSocket.accept(); // blocking call
 //                    LOG.info(String.format("Client accepted: %s", clientSocket));
@@ -46,7 +49,7 @@ public class Server {
                     myPoolOfThreads.submit(() -> {
                         try{
 //                            Thread.sleep(1000);
-                            System.out.println("Server: Currently running " + myPoolOfThreads.getActiveCount() + " Threads");
+//                            System.out.println("Server: Currently running " + myPoolOfThreads.getActiveCount() + " Threads");
                             handleClient(clientSocket);
 //                            return;
                         }
@@ -65,8 +68,11 @@ public class Server {
                 {
                     e.printStackTrace();
                 }
+//                System.out.println("Server: Currently running " + myPoolOfThreads.getActiveCount() + " Threads");
+//                System.out.println("Server: stop = " + this.stop);
             }
             serverSocket.close();
+            myPoolOfThreads.shutdown();
             if(!myPoolOfThreads.isTerminated())
                 myPoolOfThreads.shutdownNow();
 
@@ -89,7 +95,9 @@ public class Server {
 
     public void stop() {
 //        LOG.info("Stopping server..");
+//        System.out.println("Server: Stopping Server so stop =  " + this.stop);
         stop = true;
-        myPoolOfThreads.shutdown();
+//        System.out.println("Server: Server should now stop, stop = " + this.stop);
+
     }
 }

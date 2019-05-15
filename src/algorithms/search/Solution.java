@@ -18,4 +18,14 @@ public class Solution implements Serializable
     public ArrayList<AState> getSolutionPath() {
         return this.allStatesInSolution;
     }
+
+    @Override
+    public String toString() {
+        String result = "\n";
+        for (int i = 0; i < allStatesInSolution.size(); i++) {
+            result = result + i + ". " + allStatesInSolution.get(i).toString();
+            result += "\n";
+        }
+        return result;
+    }
 }
