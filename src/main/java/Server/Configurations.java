@@ -17,6 +17,25 @@ public class Configurations {
 
     }
 
+    public void setProperties(String propName,String propValue)
+    {
+        try (OutputStream output = new FileOutputStream("resources/config.properties")) {
+
+            // set the properties value
+            prop.setProperty(propName, propValue);
+
+
+            // save properties to project root folder
+            prop.store(output, null);
+
+//            System.out.println(prop);
+
+
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
+    }
+
     private void initProperties() {
         try (OutputStream output = new FileOutputStream("resources/config.properties")) {
 
@@ -32,7 +51,7 @@ public class Configurations {
             // save properties to project root folder
             prop.store(output, null);
 
-            System.out.println(prop);
+//            System.out.println(prop);
 
         } catch (IOException io) {
             io.printStackTrace();
